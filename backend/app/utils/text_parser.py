@@ -312,6 +312,30 @@ class EnhancedTextParser:
                 self.logger.info(f"Extracted location from capitalization: {corrected}")
                 return corrected, was_corrected, suggestions
         
+        # FALLBACK: Try to match any word in the query against city database (case-insensitive)
+        # This handles lowercase city names like "mumbai", "paris", etc.
+        words = normalized.split()
+        for word in words:
+            if word.lower() not in self.SKIP_WORDS and len(word) > 2:
+                # Try as single word
+                corrected, was_corrected, suggestions = self.check_city_spelling(word.capitalize())
+                if corrected and len(corrected) > 2:
+                    self.logger.info(f"Extracted location from word match: {corrected} (from: {word})")
+                    return corrected, True, suggestions
+        
+        # Try multi-word combinations from normalized text
+        words = normalized.split()
+        for i in range(len(words)):
+            for j in range(i + 1, min(i + 4, len(words) + 1)):
+                phrase = " ".join(words[i:j])
+                if len(phrase) > 3 and not all(w in self.SKIP_WORDS for w in phrase.split()):
+                    # Capitalize each word
+                    capitalized_phrase = " ".join(word.capitalize() for word in phrase.split())
+                    corrected, was_corrected, suggestions = self.check_city_spelling(capitalized_phrase)
+                    if corrected and len(corrected) > 2:
+                        self.logger.info(f"Extracted location from phrase: {corrected} (from: {phrase})")
+                        return corrected, True, suggestions
+        
         self.logger.warning(f"Could not extract location from: {text}")
         return None
     
