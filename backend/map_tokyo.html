@@ -1,0 +1,678 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Tokyo - Tourist Map</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                display: flex;
+                height: 100vh;
+                overflow: hidden;
+            }
+            
+            .sidebar {
+                width: 350px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 20px;
+                overflow-y: auto;
+                box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            }
+            
+            .sidebar h1 {
+                font-size: 28px;
+                margin-bottom: 10px;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            }
+            
+            .sidebar h2 {
+                font-size: 16px;
+                font-weight: 300;
+                margin-bottom: 20px;
+                opacity: 0.9;
+            }
+            
+            .info-section {
+                background: rgba(255,255,255,0.1);
+                border-radius: 10px;
+                padding: 15px;
+                margin-bottom: 20px;
+                backdrop-filter: blur(10px);
+            }
+            
+            .info-section h3 {
+                font-size: 18px;
+                margin-bottom: 15px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            
+            .weather-info {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .weather-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px;
+                background: rgba(255,255,255,0.1);
+                border-radius: 5px;
+            }
+            
+            .weather-label {
+                font-size: 14px;
+                opacity: 0.9;
+            }
+            
+            .weather-value {
+                font-size: 18px;
+                font-weight: bold;
+            }
+            
+            .places-list {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .place-item {
+                background: rgba(255,255,255,0.1);
+                border-radius: 8px;
+                padding: 12px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                transition: all 0.3s ease;
+                cursor: pointer;
+            }
+            
+            .place-item:hover {
+                background: rgba(255,255,255,0.2);
+                transform: translateX(5px);
+            }
+            
+            .place-number {
+                width: 30px;
+                height: 30px;
+                background: white;
+                color: #667eea;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                flex-shrink: 0;
+            }
+            
+            .place-info {
+                flex: 1;
+            }
+            
+            .place-name {
+                font-size: 15px;
+                font-weight: 500;
+                margin-bottom: 4px;
+            }
+            
+            .place-type {
+                font-size: 12px;
+                opacity: 0.8;
+            }
+            
+            .map-container {
+                flex: 1;
+                position: relative;
+            }
+            
+            .map-container iframe {
+                width: 100%;
+                height: 100%;
+                border: none;
+            }
+            
+            .stats {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+            
+            .stat-box {
+                flex: 1;
+                background: rgba(255,255,255,0.1);
+                padding: 10px;
+                border-radius: 8px;
+                text-align: center;
+            }
+            
+            .stat-number {
+                font-size: 24px;
+                font-weight: bold;
+                display: block;
+            }
+            
+            .stat-label {
+                font-size: 12px;
+                opacity: 0.8;
+                display: block;
+                margin-top: 5px;
+            }
+            
+            @media (max-width: 768px) {
+                body {
+                    flex-direction: column;
+                }
+                
+                .sidebar {
+                    width: 100%;
+                    max-height: 40vh;
+                }
+                
+                .map-container {
+                    height: 60vh;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="sidebar">
+            <h1>📍 Tokyo</h1>
+            <h2>Tourist Attractions Map</h2>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <span class="stat-number">5</span>
+                    <span class="stat-label">Places</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">10km</span>
+                    <span class="stat-label">Radius</span>
+                </div>
+            </div>
+            
+            
+        <div class="info-section">
+            <h3>🌤️ Current Weather</h3>
+            <div class="weather-info">
+                <div class="weather-item">
+                    <span class="weather-label">Temperature</span>
+                    <span class="weather-value">25.0°C</span>
+                </div>
+                <div class="weather-item">
+                    <span class="weather-label">Rain Chance</span>
+                    <span class="weather-value">30%</span>
+                </div>
+            </div>
+        </div>
+        
+            
+            <div class="info-section">
+                <h3>🏛️ Top Attractions</h3>
+                <div class="places-list">
+                    
+        <div class="place-item">
+            <div class="place-number">1</div>
+            <div class="place-info">
+                <div class="place-name">Artizon Museum</div>
+                <div class="place-type">Museum</div>
+            </div>
+        </div>
+        
+        <div class="place-item">
+            <div class="place-number">2</div>
+            <div class="place-info">
+                <div class="place-name">Tokyo Photographic Art Museum</div>
+                <div class="place-type">Museum</div>
+            </div>
+        </div>
+        
+        <div class="place-item">
+            <div class="place-number">3</div>
+            <div class="place-info">
+                <div class="place-name">Japan Traditional Crafts Centre</div>
+                <div class="place-type">Museum</div>
+            </div>
+        </div>
+        
+        <div class="place-item">
+            <div class="place-number">4</div>
+            <div class="place-info">
+                <div class="place-name">Ntl Park Nature Study</div>
+                <div class="place-type">Park</div>
+            </div>
+        </div>
+        
+        <div class="place-item">
+            <div class="place-number">5</div>
+            <div class="place-info">
+                <div class="place-name">Kanze No Theater</div>
+                <div class="place-type">Attraction</div>
+            </div>
+        </div>
+        
+                </div>
+            </div>
+            
+            <div class="info-section" style="background: rgba(255,255,255,0.05);">
+                <p style="font-size: 12px; opacity: 0.8; line-height: 1.6;">
+                    💡 <b>Tip:</b> Click on markers for more details. Use the fullscreen button and measure tool on the map for better exploration.
+                </p>
+            </div>
+        </div>
+        
+        <div class="map-container">
+            <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -> Trust Notebook</span><iframe srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    
+    &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;
+    
+        &lt;script&gt;
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        &lt;/script&gt;
+    
+    &lt;style&gt;html, body {width: 100%;height: 100%;margin: 0;padding: 0;}&lt;/style&gt;
+    &lt;style&gt;#map {position:absolute;top:0;bottom:0;right:0;left:0;}&lt;/style&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/&gt;
+    
+            &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
+            &lt;style&gt;
+                #map_4e6a1c3dcdee5fa6ff0062f6b13cb062 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            &lt;/style&gt;
+        
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css&quot;/&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.css&quot;/&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    
+    
+    &lt;div style=&quot;position: fixed; 
+                bottom: 50px; right: 50px; 
+                width: 250px; 
+                background-color: white; 
+                border: 2px solid grey; 
+                border-radius: 5px;
+                z-index: 9999; 
+                font-size: 14px;
+                padding: 10px;
+                box-shadow: 0 0 15px rgba(0,0,0,0.2);&quot;&gt;
+        &lt;h4 style=&quot;margin: 0 0 10px 0; color: #2c3e50;&quot;&gt;🗺️ Map Legend&lt;/h4&gt;
+        &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;i class=&quot;fa fa-home&quot; style=&quot;color: red;&quot;&gt;&lt;/i&gt; City Center&lt;/p&gt;
+        &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;i class=&quot;fa fa-star&quot; style=&quot;color: blue;&quot;&gt;&lt;/i&gt; Tourist Attraction&lt;/p&gt;
+        &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;i class=&quot;fa fa-university&quot; style=&quot;color: purple;&quot;&gt;&lt;/i&gt; Museum&lt;/p&gt;
+        &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;i class=&quot;fa fa-tree&quot; style=&quot;color: green;&quot;&gt;&lt;/i&gt; Park&lt;/p&gt;
+        &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;i class=&quot;fa fa-monument&quot; style=&quot;color: darkblue;&quot;&gt;&lt;/i&gt; Monument&lt;/p&gt;
+        &lt;hr style=&quot;margin: 10px 0;&quot;&gt;
+        &lt;p style=&quot;margin: 5px 0; font-size: 12px; color: #7f8c8d;&quot;&gt;
+            &lt;b&gt;5&lt;/b&gt; places found&lt;br&gt;
+            Click markers for details
+        &lt;/p&gt;
+    &lt;/div&gt;
+    
+    
+    &lt;style&gt;
+        .leaflet-popup-content-wrapper {
+            border-radius: 8px;
+        }
+        .leaflet-popup-content h3, .leaflet-popup-content h4 {
+            margin-top: 0;
+        }
+    &lt;/style&gt;
+    
+    
+            &lt;div class=&quot;folium-map&quot; id=&quot;map_4e6a1c3dcdee5fa6ff0062f6b13cb062&quot; &gt;&lt;/div&gt;
+        
+&lt;/body&gt;
+&lt;script&gt;
+    
+    
+            var map_4e6a1c3dcdee5fa6ff0062f6b13cb062 = L.map(
+                &quot;map_4e6a1c3dcdee5fa6ff0062f6b13cb062&quot;,
+                {
+                    center: [35.6768601, 139.7638947],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 12,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+            L.control.scale().addTo(map_4e6a1c3dcdee5fa6ff0062f6b13cb062);
+
+            
+
+        
+    
+            var tile_layer_670a4d5b2faec00bdb91217ac4759918 = L.tileLayer(
+                &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
+                {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
+            );
+        
+    
+            tile_layer_670a4d5b2faec00bdb91217ac4759918.addTo(map_4e6a1c3dcdee5fa6ff0062f6b13cb062);
+        
+    
+            var marker_de65d6c57690862935e551186ab8d523 = L.marker(
+                [35.6768601, 139.7638947],
+                {}
+            ).addTo(map_4e6a1c3dcdee5fa6ff0062f6b13cb062);
+        
+    
+            var icon_c147990c771915793e971a6efda76e57 = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;home&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;red&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_de65d6c57690862935e551186ab8d523.setIcon(icon_c147990c771915793e971a6efda76e57);
+        
+    
+        var popup_0d3c5a91d1513f93e38a689f2c7429d6 = L.popup({&quot;maxWidth&quot;: 300});
+
+        
+            
+                var html_ea6b0ea92f0b343953b08dc3cd3ea343 = $(`&lt;div id=&quot;html_ea6b0ea92f0b343953b08dc3cd3ea343&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;     &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 200px;&quot;&gt;         &lt;h3 style=&quot;color: #2c3e50; margin: 0 0 10px 0;&quot;&gt;Tokyo&lt;/h3&gt;         &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;b&gt;📍 City Center&lt;/b&gt;&lt;/p&gt;              &lt;hr style=&quot;margin: 10px 0;&quot;&gt;         &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;b&gt;🌡️ Temperature:&lt;/b&gt; 25.0°C&lt;/p&gt;         &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;b&gt;🌧️ Rain Chance:&lt;/b&gt; 30%&lt;/p&gt;         &lt;/div&gt;&lt;/div&gt;`)[0];
+                popup_0d3c5a91d1513f93e38a689f2c7429d6.setContent(html_ea6b0ea92f0b343953b08dc3cd3ea343);
+            
+        
+
+        marker_de65d6c57690862935e551186ab8d523.bindPopup(popup_0d3c5a91d1513f93e38a689f2c7429d6)
+        ;
+
+        
+    
+    
+            marker_de65d6c57690862935e551186ab8d523.bindTooltip(
+                `&lt;div&gt;
+                     Tokyo (City Center)
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var marker_70a89326b90710fe72564dcf581d3838 = L.marker(
+                [35.678749, 139.7721285],
+                {}
+            ).addTo(map_4e6a1c3dcdee5fa6ff0062f6b13cb062);
+        
+    
+            var icon_8cbb25fe35258d0c0953057a7dec8733 = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;university&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;purple&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_70a89326b90710fe72564dcf581d3838.setIcon(icon_8cbb25fe35258d0c0953057a7dec8733);
+        
+    
+        var popup_530a140701bd80bc93e6bbe691f70d91 = L.popup({&quot;maxWidth&quot;: 250});
+
+        
+            
+                var html_09a15c1495a4d86b441c3430c29c1e94 = $(`&lt;div id=&quot;html_09a15c1495a4d86b441c3430c29c1e94&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;         &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 180px;&quot;&gt;             &lt;h4 style=&quot;color: #2c3e50; margin: 0 0 8px 0;&quot;&gt;Artizon Museum&lt;/h4&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Type:&lt;/b&gt; Museum&lt;/p&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Location:&lt;/b&gt; 35.6787, 139.7721&lt;/p&gt;             &lt;p style=&quot;margin: 8px 0 0 0; font-size: 12px; color: #95a5a6;&quot;&gt;#1 on the list&lt;/p&gt;         &lt;/div&gt;         &lt;/div&gt;`)[0];
+                popup_530a140701bd80bc93e6bbe691f70d91.setContent(html_09a15c1495a4d86b441c3430c29c1e94);
+            
+        
+
+        marker_70a89326b90710fe72564dcf581d3838.bindPopup(popup_530a140701bd80bc93e6bbe691f70d91)
+        ;
+
+        
+    
+    
+            marker_70a89326b90710fe72564dcf581d3838.bindTooltip(
+                `&lt;div&gt;
+                     #1: Artizon Museum
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var poly_line_54fa6d25ac5976c7511c287f5c5f3ea0 = L.polyline(
+                [[35.6768601, 139.7638947], [35.678749, 139.7721285]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;gray&quot;, &quot;dashArray&quot;: &quot;5&quot;, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;gray&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.3, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(map_4e6a1c3dcdee5fa6ff0062f6b13cb062);
+        
+    
+            var marker_943965d49197522980e35a5697dcf351 = L.marker(
+                [35.641543, 139.7133962],
+                {}
+            ).addTo(map_4e6a1c3dcdee5fa6ff0062f6b13cb062);
+        
+    
+            var icon_09af06e073bec9a0f3c66978c83cafc2 = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;university&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;purple&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_943965d49197522980e35a5697dcf351.setIcon(icon_09af06e073bec9a0f3c66978c83cafc2);
+        
+    
+        var popup_00744afaace64ffb35050d136db89c8f = L.popup({&quot;maxWidth&quot;: 250});
+
+        
+            
+                var html_2ef49f14f7a381da7fe7c5a1b5e3d704 = $(`&lt;div id=&quot;html_2ef49f14f7a381da7fe7c5a1b5e3d704&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;         &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 180px;&quot;&gt;             &lt;h4 style=&quot;color: #2c3e50; margin: 0 0 8px 0;&quot;&gt;Tokyo Photographic Art Museum&lt;/h4&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Type:&lt;/b&gt; Museum&lt;/p&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Location:&lt;/b&gt; 35.6415, 139.7134&lt;/p&gt;             &lt;p style=&quot;margin: 8px 0 0 0; font-size: 12px; color: #95a5a6;&quot;&gt;#2 on the list&lt;/p&gt;         &lt;/div&gt;         &lt;/div&gt;`)[0];
+                popup_00744afaace64ffb35050d136db89c8f.setContent(html_2ef49f14f7a381da7fe7c5a1b5e3d704);
+            
+        
+
+        marker_943965d49197522980e35a5697dcf351.bindPopup(popup_00744afaace64ffb35050d136db89c8f)
+        ;
+
+        
+    
+    
+            marker_943965d49197522980e35a5697dcf351.bindTooltip(
+                `&lt;div&gt;
+                     #2: Tokyo Photographic Art Museum
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var poly_line_ce8bab27fc503444b5a8b2af09edaf8d = L.polyline(
+                [[35.6768601, 139.7638947], [35.641543, 139.7133962]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;gray&quot;, &quot;dashArray&quot;: &quot;5&quot;, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;gray&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.3, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(map_4e6a1c3dcdee5fa6ff0062f6b13cb062);
+        
+    
+            var marker_e4c0d64080f7ec88be3d2dc7c0a89dfc = L.marker(
+                [35.7288374, 139.7093019],
+                {}
+            ).addTo(map_4e6a1c3dcdee5fa6ff0062f6b13cb062);
+        
+    
+            var icon_e70957307c9ac8eff2e2a43b06800d4a = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;university&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;purple&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_e4c0d64080f7ec88be3d2dc7c0a89dfc.setIcon(icon_e70957307c9ac8eff2e2a43b06800d4a);
+        
+    
+        var popup_3f436e13472bbfef253d869e67cda4e0 = L.popup({&quot;maxWidth&quot;: 250});
+
+        
+            
+                var html_11b29127b43b6e6cfacfe693a5c0ff97 = $(`&lt;div id=&quot;html_11b29127b43b6e6cfacfe693a5c0ff97&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;         &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 180px;&quot;&gt;             &lt;h4 style=&quot;color: #2c3e50; margin: 0 0 8px 0;&quot;&gt;Japan Traditional Crafts Centre&lt;/h4&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Type:&lt;/b&gt; Museum&lt;/p&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Location:&lt;/b&gt; 35.7288, 139.7093&lt;/p&gt;             &lt;p style=&quot;margin: 8px 0 0 0; font-size: 12px; color: #95a5a6;&quot;&gt;#3 on the list&lt;/p&gt;         &lt;/div&gt;         &lt;/div&gt;`)[0];
+                popup_3f436e13472bbfef253d869e67cda4e0.setContent(html_11b29127b43b6e6cfacfe693a5c0ff97);
+            
+        
+
+        marker_e4c0d64080f7ec88be3d2dc7c0a89dfc.bindPopup(popup_3f436e13472bbfef253d869e67cda4e0)
+        ;
+
+        
+    
+    
+            marker_e4c0d64080f7ec88be3d2dc7c0a89dfc.bindTooltip(
+                `&lt;div&gt;
+                     #3: Japan Traditional Crafts Centre
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var poly_line_742fe0bd13d31caffb591488c11a6c35 = L.polyline(
+                [[35.6768601, 139.7638947], [35.7288374, 139.7093019]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;gray&quot;, &quot;dashArray&quot;: &quot;5&quot;, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;gray&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.3, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(map_4e6a1c3dcdee5fa6ff0062f6b13cb062);
+        
+    
+            var marker_516bbecd2b45503e390f8ff3534455d2 = L.marker(
+                [35.6397288, 139.7177804],
+                {}
+            ).addTo(map_4e6a1c3dcdee5fa6ff0062f6b13cb062);
+        
+    
+            var icon_68c302070a2e9fe09d33db27697f1f40 = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;tree&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;green&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_516bbecd2b45503e390f8ff3534455d2.setIcon(icon_68c302070a2e9fe09d33db27697f1f40);
+        
+    
+        var popup_a51f3a0dbdd2b003a14ec64effaacbd6 = L.popup({&quot;maxWidth&quot;: 250});
+
+        
+            
+                var html_535857ea44439d6b866e26192d573f23 = $(`&lt;div id=&quot;html_535857ea44439d6b866e26192d573f23&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;         &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 180px;&quot;&gt;             &lt;h4 style=&quot;color: #2c3e50; margin: 0 0 8px 0;&quot;&gt;Ntl Park Nature Study&lt;/h4&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Type:&lt;/b&gt; Park&lt;/p&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Location:&lt;/b&gt; 35.6397, 139.7178&lt;/p&gt;             &lt;p style=&quot;margin: 8px 0 0 0; font-size: 12px; color: #95a5a6;&quot;&gt;#4 on the list&lt;/p&gt;         &lt;/div&gt;         &lt;/div&gt;`)[0];
+                popup_a51f3a0dbdd2b003a14ec64effaacbd6.setContent(html_535857ea44439d6b866e26192d573f23);
+            
+        
+
+        marker_516bbecd2b45503e390f8ff3534455d2.bindPopup(popup_a51f3a0dbdd2b003a14ec64effaacbd6)
+        ;
+
+        
+    
+    
+            marker_516bbecd2b45503e390f8ff3534455d2.bindTooltip(
+                `&lt;div&gt;
+                     #4: Ntl Park Nature Study
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var poly_line_fd2b6aef5ba2b7e4d538108bbd6ebdaa = L.polyline(
+                [[35.6768601, 139.7638947], [35.6397288, 139.7177804]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;gray&quot;, &quot;dashArray&quot;: &quot;5&quot;, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;gray&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.3, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(map_4e6a1c3dcdee5fa6ff0062f6b13cb062);
+        
+    
+            var marker_58da9973458cc33fe22efdbf7631cf38 = L.marker(
+                [35.6620432, 139.6935718],
+                {}
+            ).addTo(map_4e6a1c3dcdee5fa6ff0062f6b13cb062);
+        
+    
+            var icon_5716764099989279fdeb979273490071 = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;star&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;blue&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_58da9973458cc33fe22efdbf7631cf38.setIcon(icon_5716764099989279fdeb979273490071);
+        
+    
+        var popup_6dcb7cbd12dbae7615d463d4c6e5d41f = L.popup({&quot;maxWidth&quot;: 250});
+
+        
+            
+                var html_e2ab72c60a7c4d8e65b333df760b804c = $(`&lt;div id=&quot;html_e2ab72c60a7c4d8e65b333df760b804c&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;         &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 180px;&quot;&gt;             &lt;h4 style=&quot;color: #2c3e50; margin: 0 0 8px 0;&quot;&gt;Kanze No Theater&lt;/h4&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Type:&lt;/b&gt; Attraction&lt;/p&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Location:&lt;/b&gt; 35.6620, 139.6936&lt;/p&gt;             &lt;p style=&quot;margin: 8px 0 0 0; font-size: 12px; color: #95a5a6;&quot;&gt;#5 on the list&lt;/p&gt;         &lt;/div&gt;         &lt;/div&gt;`)[0];
+                popup_6dcb7cbd12dbae7615d463d4c6e5d41f.setContent(html_e2ab72c60a7c4d8e65b333df760b804c);
+            
+        
+
+        marker_58da9973458cc33fe22efdbf7631cf38.bindPopup(popup_6dcb7cbd12dbae7615d463d4c6e5d41f)
+        ;
+
+        
+    
+    
+            marker_58da9973458cc33fe22efdbf7631cf38.bindTooltip(
+                `&lt;div&gt;
+                     #5: Kanze No Theater
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var poly_line_f88e2b71de58dcf3cb8031d996e80101 = L.polyline(
+                [[35.6768601, 139.7638947], [35.6620432, 139.6935718]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;gray&quot;, &quot;dashArray&quot;: &quot;5&quot;, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;gray&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.3, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(map_4e6a1c3dcdee5fa6ff0062f6b13cb062);
+        
+    
+            var circle_5c0f738ee3eb0da55eaa930ab3097542 = L.circle(
+                [35.6768601, 139.7638947],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;lightblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;lightblue&quot;, &quot;fillOpacity&quot;: 0.1, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 10000, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_4e6a1c3dcdee5fa6ff0062f6b13cb062);
+        
+    
+        var popup_1256a36db81205d59ba0f3ebeb857df6 = L.popup({&quot;maxWidth&quot;: &quot;100%&quot;});
+
+        
+            
+                var html_c630a2d4bca0af030d2e359097de567e = $(`&lt;div id=&quot;html_c630a2d4bca0af030d2e359097de567e&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Search area (10km radius)&lt;/div&gt;`)[0];
+                popup_1256a36db81205d59ba0f3ebeb857df6.setContent(html_c630a2d4bca0af030d2e359097de567e);
+            
+        
+
+        circle_5c0f738ee3eb0da55eaa930ab3097542.bindPopup(popup_1256a36db81205d59ba0f3ebeb857df6)
+        ;
+
+        
+    
+    
+            L.control.fullscreen(
+                {&quot;forceSeparateButton&quot;: true, &quot;position&quot;: &quot;topright&quot;, &quot;title&quot;: &quot;Fullscreen&quot;, &quot;titleCancel&quot;: &quot;Exit fullscreen&quot;}
+            ).addTo(map_4e6a1c3dcdee5fa6ff0062f6b13cb062);
+        
+    
+            var measure_control_5825f5e1ed310f486f73fbbba13e8e98 = new L.Control.Measure(
+                {&quot;position&quot;: &quot;topleft&quot;, &quot;primaryAreaUnit&quot;: &quot;sqmeters&quot;, &quot;primaryLengthUnit&quot;: &quot;kilometers&quot;, &quot;secondaryAreaUnit&quot;: &quot;acres&quot;, &quot;secondaryLengthUnit&quot;: &quot;miles&quot;});
+            map_4e6a1c3dcdee5fa6ff0062f6b13cb062.addControl(measure_control_5825f5e1ed310f486f73fbbba13e8e98);
+
+            // Workaround for using this plugin with Leaflet&gt;=1.8.0
+            // https://github.com/ljagis/leaflet-measure/issues/171
+            L.Control.Measure.include({
+                _setCaptureMarkerIcon: function () {
+                    // disable autopan
+                    this._captureMarker.options.autoPanOnFocus = false;
+                    // default function
+                    this._captureMarker.setIcon(
+                        L.divIcon({
+                            iconSize: this._map.getSize().multiplyBy(2)
+                        })
+                    );
+                },
+            });
+
+        
+&lt;/script&gt;
+&lt;/html&gt;" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe></div></div>
+        </div>
+    </body>
+    </html>
+    

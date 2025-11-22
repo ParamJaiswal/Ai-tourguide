@@ -1,0 +1,678 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Paris - Tourist Map</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                display: flex;
+                height: 100vh;
+                overflow: hidden;
+            }
+            
+            .sidebar {
+                width: 350px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 20px;
+                overflow-y: auto;
+                box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            }
+            
+            .sidebar h1 {
+                font-size: 28px;
+                margin-bottom: 10px;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            }
+            
+            .sidebar h2 {
+                font-size: 16px;
+                font-weight: 300;
+                margin-bottom: 20px;
+                opacity: 0.9;
+            }
+            
+            .info-section {
+                background: rgba(255,255,255,0.1);
+                border-radius: 10px;
+                padding: 15px;
+                margin-bottom: 20px;
+                backdrop-filter: blur(10px);
+            }
+            
+            .info-section h3 {
+                font-size: 18px;
+                margin-bottom: 15px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            
+            .weather-info {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .weather-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px;
+                background: rgba(255,255,255,0.1);
+                border-radius: 5px;
+            }
+            
+            .weather-label {
+                font-size: 14px;
+                opacity: 0.9;
+            }
+            
+            .weather-value {
+                font-size: 18px;
+                font-weight: bold;
+            }
+            
+            .places-list {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .place-item {
+                background: rgba(255,255,255,0.1);
+                border-radius: 8px;
+                padding: 12px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                transition: all 0.3s ease;
+                cursor: pointer;
+            }
+            
+            .place-item:hover {
+                background: rgba(255,255,255,0.2);
+                transform: translateX(5px);
+            }
+            
+            .place-number {
+                width: 30px;
+                height: 30px;
+                background: white;
+                color: #667eea;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                flex-shrink: 0;
+            }
+            
+            .place-info {
+                flex: 1;
+            }
+            
+            .place-name {
+                font-size: 15px;
+                font-weight: 500;
+                margin-bottom: 4px;
+            }
+            
+            .place-type {
+                font-size: 12px;
+                opacity: 0.8;
+            }
+            
+            .map-container {
+                flex: 1;
+                position: relative;
+            }
+            
+            .map-container iframe {
+                width: 100%;
+                height: 100%;
+                border: none;
+            }
+            
+            .stats {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+            
+            .stat-box {
+                flex: 1;
+                background: rgba(255,255,255,0.1);
+                padding: 10px;
+                border-radius: 8px;
+                text-align: center;
+            }
+            
+            .stat-number {
+                font-size: 24px;
+                font-weight: bold;
+                display: block;
+            }
+            
+            .stat-label {
+                font-size: 12px;
+                opacity: 0.8;
+                display: block;
+                margin-top: 5px;
+            }
+            
+            @media (max-width: 768px) {
+                body {
+                    flex-direction: column;
+                }
+                
+                .sidebar {
+                    width: 100%;
+                    max-height: 40vh;
+                }
+                
+                .map-container {
+                    height: 60vh;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="sidebar">
+            <h1>📍 Paris</h1>
+            <h2>Tourist Attractions Map</h2>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <span class="stat-number">5</span>
+                    <span class="stat-label">Places</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">10km</span>
+                    <span class="stat-label">Radius</span>
+                </div>
+            </div>
+            
+            
+        <div class="info-section">
+            <h3>🌤️ Current Weather</h3>
+            <div class="weather-info">
+                <div class="weather-item">
+                    <span class="weather-label">Temperature</span>
+                    <span class="weather-value">25.0°C</span>
+                </div>
+                <div class="weather-item">
+                    <span class="weather-label">Rain Chance</span>
+                    <span class="weather-value">30%</span>
+                </div>
+            </div>
+        </div>
+        
+            
+            <div class="info-section">
+                <h3>🏛️ Top Attractions</h3>
+                <div class="places-list">
+                    
+        <div class="place-item">
+            <div class="place-number">1</div>
+            <div class="place-info">
+                <div class="place-name">The Army Museum</div>
+                <div class="place-type">Museum</div>
+            </div>
+        </div>
+        
+        <div class="place-item">
+            <div class="place-number">2</div>
+            <div class="place-info">
+                <div class="place-name">Grande Arche</div>
+                <div class="place-type">Viewpoint</div>
+            </div>
+        </div>
+        
+        <div class="place-item">
+            <div class="place-number">3</div>
+            <div class="place-info">
+                <div class="place-name">Point Zero for French Road Measurements</div>
+                <div class="place-type">Attraction</div>
+            </div>
+        </div>
+        
+        <div class="place-item">
+            <div class="place-number">4</div>
+            <div class="place-info">
+                <div class="place-name">Musée de l'Assistance Publique Hôpitaux de Paris</div>
+                <div class="place-type">Museum</div>
+            </div>
+        </div>
+        
+        <div class="place-item">
+            <div class="place-number">5</div>
+            <div class="place-info">
+                <div class="place-name">Musée des Arts Décoratifs</div>
+                <div class="place-type">Museum</div>
+            </div>
+        </div>
+        
+                </div>
+            </div>
+            
+            <div class="info-section" style="background: rgba(255,255,255,0.05);">
+                <p style="font-size: 12px; opacity: 0.8; line-height: 1.6;">
+                    💡 <b>Tip:</b> Click on markers for more details. Use the fullscreen button and measure tool on the map for better exploration.
+                </p>
+            </div>
+        </div>
+        
+        <div class="map-container">
+            <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -> Trust Notebook</span><iframe srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    
+    &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;
+    
+        &lt;script&gt;
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        &lt;/script&gt;
+    
+    &lt;style&gt;html, body {width: 100%;height: 100%;margin: 0;padding: 0;}&lt;/style&gt;
+    &lt;style&gt;#map {position:absolute;top:0;bottom:0;right:0;left:0;}&lt;/style&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/&gt;
+    
+            &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
+            &lt;style&gt;
+                #map_ffb9e2e5b09363620ad930f60c3551f3 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            &lt;/style&gt;
+        
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css&quot;/&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.css&quot;/&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    
+    
+    &lt;div style=&quot;position: fixed; 
+                bottom: 50px; right: 50px; 
+                width: 250px; 
+                background-color: white; 
+                border: 2px solid grey; 
+                border-radius: 5px;
+                z-index: 9999; 
+                font-size: 14px;
+                padding: 10px;
+                box-shadow: 0 0 15px rgba(0,0,0,0.2);&quot;&gt;
+        &lt;h4 style=&quot;margin: 0 0 10px 0; color: #2c3e50;&quot;&gt;🗺️ Map Legend&lt;/h4&gt;
+        &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;i class=&quot;fa fa-home&quot; style=&quot;color: red;&quot;&gt;&lt;/i&gt; City Center&lt;/p&gt;
+        &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;i class=&quot;fa fa-star&quot; style=&quot;color: blue;&quot;&gt;&lt;/i&gt; Tourist Attraction&lt;/p&gt;
+        &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;i class=&quot;fa fa-university&quot; style=&quot;color: purple;&quot;&gt;&lt;/i&gt; Museum&lt;/p&gt;
+        &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;i class=&quot;fa fa-tree&quot; style=&quot;color: green;&quot;&gt;&lt;/i&gt; Park&lt;/p&gt;
+        &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;i class=&quot;fa fa-monument&quot; style=&quot;color: darkblue;&quot;&gt;&lt;/i&gt; Monument&lt;/p&gt;
+        &lt;hr style=&quot;margin: 10px 0;&quot;&gt;
+        &lt;p style=&quot;margin: 5px 0; font-size: 12px; color: #7f8c8d;&quot;&gt;
+            &lt;b&gt;5&lt;/b&gt; places found&lt;br&gt;
+            Click markers for details
+        &lt;/p&gt;
+    &lt;/div&gt;
+    
+    
+    &lt;style&gt;
+        .leaflet-popup-content-wrapper {
+            border-radius: 8px;
+        }
+        .leaflet-popup-content h3, .leaflet-popup-content h4 {
+            margin-top: 0;
+        }
+    &lt;/style&gt;
+    
+    
+            &lt;div class=&quot;folium-map&quot; id=&quot;map_ffb9e2e5b09363620ad930f60c3551f3&quot; &gt;&lt;/div&gt;
+        
+&lt;/body&gt;
+&lt;script&gt;
+    
+    
+            var map_ffb9e2e5b09363620ad930f60c3551f3 = L.map(
+                &quot;map_ffb9e2e5b09363620ad930f60c3551f3&quot;,
+                {
+                    center: [48.8534951, 2.3483915],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 12,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+            L.control.scale().addTo(map_ffb9e2e5b09363620ad930f60c3551f3);
+
+            
+
+        
+    
+            var tile_layer_5630bc1b564f60c1716b7d1dd9fc3ba3 = L.tileLayer(
+                &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
+                {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
+            );
+        
+    
+            tile_layer_5630bc1b564f60c1716b7d1dd9fc3ba3.addTo(map_ffb9e2e5b09363620ad930f60c3551f3);
+        
+    
+            var marker_e33f34a3091c0c27b27bb15b006c2ffc = L.marker(
+                [48.8534951, 2.3483915],
+                {}
+            ).addTo(map_ffb9e2e5b09363620ad930f60c3551f3);
+        
+    
+            var icon_49608cfc7da8115aecb9592c861ee097 = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;home&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;red&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_e33f34a3091c0c27b27bb15b006c2ffc.setIcon(icon_49608cfc7da8115aecb9592c861ee097);
+        
+    
+        var popup_a465a08268d898c547173ba1c11a6dee = L.popup({&quot;maxWidth&quot;: 300});
+
+        
+            
+                var html_2ef96e68c1047d7787143c3b6cd5684f = $(`&lt;div id=&quot;html_2ef96e68c1047d7787143c3b6cd5684f&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;     &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 200px;&quot;&gt;         &lt;h3 style=&quot;color: #2c3e50; margin: 0 0 10px 0;&quot;&gt;Paris&lt;/h3&gt;         &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;b&gt;📍 City Center&lt;/b&gt;&lt;/p&gt;              &lt;hr style=&quot;margin: 10px 0;&quot;&gt;         &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;b&gt;🌡️ Temperature:&lt;/b&gt; 25.0°C&lt;/p&gt;         &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;b&gt;🌧️ Rain Chance:&lt;/b&gt; 30%&lt;/p&gt;         &lt;/div&gt;&lt;/div&gt;`)[0];
+                popup_a465a08268d898c547173ba1c11a6dee.setContent(html_2ef96e68c1047d7787143c3b6cd5684f);
+            
+        
+
+        marker_e33f34a3091c0c27b27bb15b006c2ffc.bindPopup(popup_a465a08268d898c547173ba1c11a6dee)
+        ;
+
+        
+    
+    
+            marker_e33f34a3091c0c27b27bb15b006c2ffc.bindTooltip(
+                `&lt;div&gt;
+                     Paris (City Center)
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var marker_d64163c7f1919619696670d1a73e2bb7 = L.marker(
+                [48.8570374, 2.3118779],
+                {}
+            ).addTo(map_ffb9e2e5b09363620ad930f60c3551f3);
+        
+    
+            var icon_f104a28c5c7104b67221ec726c023087 = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;university&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;purple&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_d64163c7f1919619696670d1a73e2bb7.setIcon(icon_f104a28c5c7104b67221ec726c023087);
+        
+    
+        var popup_8304735dfeb973a6eae6b49cad842c28 = L.popup({&quot;maxWidth&quot;: 250});
+
+        
+            
+                var html_bca4b6326518295eb5ebb884d8dc513e = $(`&lt;div id=&quot;html_bca4b6326518295eb5ebb884d8dc513e&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;         &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 180px;&quot;&gt;             &lt;h4 style=&quot;color: #2c3e50; margin: 0 0 8px 0;&quot;&gt;The Army Museum&lt;/h4&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Type:&lt;/b&gt; Museum&lt;/p&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Location:&lt;/b&gt; 48.8570, 2.3119&lt;/p&gt;             &lt;p style=&quot;margin: 8px 0 0 0; font-size: 12px; color: #95a5a6;&quot;&gt;#1 on the list&lt;/p&gt;         &lt;/div&gt;         &lt;/div&gt;`)[0];
+                popup_8304735dfeb973a6eae6b49cad842c28.setContent(html_bca4b6326518295eb5ebb884d8dc513e);
+            
+        
+
+        marker_d64163c7f1919619696670d1a73e2bb7.bindPopup(popup_8304735dfeb973a6eae6b49cad842c28)
+        ;
+
+        
+    
+    
+            marker_d64163c7f1919619696670d1a73e2bb7.bindTooltip(
+                `&lt;div&gt;
+                     #1: The Army Museum
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var poly_line_e741e4964f8e36567e6a1cdc54d4e8ae = L.polyline(
+                [[48.8534951, 2.3483915], [48.8570374, 2.3118779]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;gray&quot;, &quot;dashArray&quot;: &quot;5&quot;, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;gray&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.3, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(map_ffb9e2e5b09363620ad930f60c3551f3);
+        
+    
+            var marker_f06ee878448f8d2ebfef0410cb77a2a8 = L.marker(
+                [48.8925554, 2.2358933],
+                {}
+            ).addTo(map_ffb9e2e5b09363620ad930f60c3551f3);
+        
+    
+            var icon_ea300f85f65603dfd2fb0c1b42fc2bcc = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;eye&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;orange&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_f06ee878448f8d2ebfef0410cb77a2a8.setIcon(icon_ea300f85f65603dfd2fb0c1b42fc2bcc);
+        
+    
+        var popup_f2a1d59c9e8517c363dddcac4acd2e12 = L.popup({&quot;maxWidth&quot;: 250});
+
+        
+            
+                var html_53932f6f2d5ebb8435aeca62e83efa43 = $(`&lt;div id=&quot;html_53932f6f2d5ebb8435aeca62e83efa43&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;         &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 180px;&quot;&gt;             &lt;h4 style=&quot;color: #2c3e50; margin: 0 0 8px 0;&quot;&gt;Grande Arche&lt;/h4&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Type:&lt;/b&gt; Viewpoint&lt;/p&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Location:&lt;/b&gt; 48.8926, 2.2359&lt;/p&gt;             &lt;p style=&quot;margin: 8px 0 0 0; font-size: 12px; color: #95a5a6;&quot;&gt;#2 on the list&lt;/p&gt;         &lt;/div&gt;         &lt;/div&gt;`)[0];
+                popup_f2a1d59c9e8517c363dddcac4acd2e12.setContent(html_53932f6f2d5ebb8435aeca62e83efa43);
+            
+        
+
+        marker_f06ee878448f8d2ebfef0410cb77a2a8.bindPopup(popup_f2a1d59c9e8517c363dddcac4acd2e12)
+        ;
+
+        
+    
+    
+            marker_f06ee878448f8d2ebfef0410cb77a2a8.bindTooltip(
+                `&lt;div&gt;
+                     #2: Grande Arche
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var poly_line_89940139a64b0188b6a4da92064ddecf = L.polyline(
+                [[48.8534951, 2.3483915], [48.8925554, 2.2358933]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;gray&quot;, &quot;dashArray&quot;: &quot;5&quot;, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;gray&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.3, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(map_ffb9e2e5b09363620ad930f60c3551f3);
+        
+    
+            var marker_30ab8a66d9de8c366fc9c6f86c1d2adb = L.marker(
+                [48.8533973, 2.3487972],
+                {}
+            ).addTo(map_ffb9e2e5b09363620ad930f60c3551f3);
+        
+    
+            var icon_6d57f24dab3b2fbd1c589378b7a7e3c1 = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;star&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;blue&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_30ab8a66d9de8c366fc9c6f86c1d2adb.setIcon(icon_6d57f24dab3b2fbd1c589378b7a7e3c1);
+        
+    
+        var popup_d208ddc3ba559db118dd2afe3a3bb4ca = L.popup({&quot;maxWidth&quot;: 250});
+
+        
+            
+                var html_595d48472430e80ac7285dc1d37d0576 = $(`&lt;div id=&quot;html_595d48472430e80ac7285dc1d37d0576&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;         &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 180px;&quot;&gt;             &lt;h4 style=&quot;color: #2c3e50; margin: 0 0 8px 0;&quot;&gt;Point Zero for French Road Measurements&lt;/h4&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Type:&lt;/b&gt; Attraction&lt;/p&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Location:&lt;/b&gt; 48.8534, 2.3488&lt;/p&gt;             &lt;p style=&quot;margin: 8px 0 0 0; font-size: 12px; color: #95a5a6;&quot;&gt;#3 on the list&lt;/p&gt;         &lt;/div&gt;         &lt;/div&gt;`)[0];
+                popup_d208ddc3ba559db118dd2afe3a3bb4ca.setContent(html_595d48472430e80ac7285dc1d37d0576);
+            
+        
+
+        marker_30ab8a66d9de8c366fc9c6f86c1d2adb.bindPopup(popup_d208ddc3ba559db118dd2afe3a3bb4ca)
+        ;
+
+        
+    
+    
+            marker_30ab8a66d9de8c366fc9c6f86c1d2adb.bindTooltip(
+                `&lt;div&gt;
+                     #3: Point Zero for French Road Measurements
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var poly_line_047331bee4f4d1fdd23d88c738a6bda0 = L.polyline(
+                [[48.8534951, 2.3483915], [48.8533973, 2.3487972]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;gray&quot;, &quot;dashArray&quot;: &quot;5&quot;, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;gray&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.3, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(map_ffb9e2e5b09363620ad930f60c3551f3);
+        
+    
+            var marker_66e06d1df5d51693a48c88b43b599761 = L.marker(
+                [48.8091747, 2.3524371],
+                {}
+            ).addTo(map_ffb9e2e5b09363620ad930f60c3551f3);
+        
+    
+            var icon_9321f161dbf435e7b93aa30b611e4991 = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;university&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;purple&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_66e06d1df5d51693a48c88b43b599761.setIcon(icon_9321f161dbf435e7b93aa30b611e4991);
+        
+    
+        var popup_09331db876d24f603b02ee86abfcb4bd = L.popup({&quot;maxWidth&quot;: 250});
+
+        
+            
+                var html_3a09f754e7162210c4d62a9f3c510fc8 = $(`&lt;div id=&quot;html_3a09f754e7162210c4d62a9f3c510fc8&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;         &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 180px;&quot;&gt;             &lt;h4 style=&quot;color: #2c3e50; margin: 0 0 8px 0;&quot;&gt;Musée de l&#x27;Assistance Publique Hôpitaux de Paris&lt;/h4&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Type:&lt;/b&gt; Museum&lt;/p&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Location:&lt;/b&gt; 48.8092, 2.3524&lt;/p&gt;             &lt;p style=&quot;margin: 8px 0 0 0; font-size: 12px; color: #95a5a6;&quot;&gt;#4 on the list&lt;/p&gt;         &lt;/div&gt;         &lt;/div&gt;`)[0];
+                popup_09331db876d24f603b02ee86abfcb4bd.setContent(html_3a09f754e7162210c4d62a9f3c510fc8);
+            
+        
+
+        marker_66e06d1df5d51693a48c88b43b599761.bindPopup(popup_09331db876d24f603b02ee86abfcb4bd)
+        ;
+
+        
+    
+    
+            marker_66e06d1df5d51693a48c88b43b599761.bindTooltip(
+                `&lt;div&gt;
+                     #4: Musée de l&#x27;Assistance Publique Hôpitaux de Paris
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var poly_line_23afde958742d787b2a4d428e895cb17 = L.polyline(
+                [[48.8534951, 2.3483915], [48.8091747, 2.3524371]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;gray&quot;, &quot;dashArray&quot;: &quot;5&quot;, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;gray&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.3, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(map_ffb9e2e5b09363620ad930f60c3551f3);
+        
+    
+            var marker_6fc77fd479768f29f46ae84e777853e9 = L.marker(
+                [48.8631692, 2.3329513],
+                {}
+            ).addTo(map_ffb9e2e5b09363620ad930f60c3551f3);
+        
+    
+            var icon_78c79e9db7cf6dac20e9c3f92a9ce005 = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;university&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;purple&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_6fc77fd479768f29f46ae84e777853e9.setIcon(icon_78c79e9db7cf6dac20e9c3f92a9ce005);
+        
+    
+        var popup_35144571522301799d6afb57031684bb = L.popup({&quot;maxWidth&quot;: 250});
+
+        
+            
+                var html_351e2dba37b23c7dfa0efa8741cf3f25 = $(`&lt;div id=&quot;html_351e2dba37b23c7dfa0efa8741cf3f25&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;         &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 180px;&quot;&gt;             &lt;h4 style=&quot;color: #2c3e50; margin: 0 0 8px 0;&quot;&gt;Musée des Arts Décoratifs&lt;/h4&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Type:&lt;/b&gt; Museum&lt;/p&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Location:&lt;/b&gt; 48.8632, 2.3330&lt;/p&gt;             &lt;p style=&quot;margin: 8px 0 0 0; font-size: 12px; color: #95a5a6;&quot;&gt;#5 on the list&lt;/p&gt;         &lt;/div&gt;         &lt;/div&gt;`)[0];
+                popup_35144571522301799d6afb57031684bb.setContent(html_351e2dba37b23c7dfa0efa8741cf3f25);
+            
+        
+
+        marker_6fc77fd479768f29f46ae84e777853e9.bindPopup(popup_35144571522301799d6afb57031684bb)
+        ;
+
+        
+    
+    
+            marker_6fc77fd479768f29f46ae84e777853e9.bindTooltip(
+                `&lt;div&gt;
+                     #5: Musée des Arts Décoratifs
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var poly_line_2ad9b9b65ca5d40db7b3897c3dfeab16 = L.polyline(
+                [[48.8534951, 2.3483915], [48.8631692, 2.3329513]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;gray&quot;, &quot;dashArray&quot;: &quot;5&quot;, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;gray&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.3, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(map_ffb9e2e5b09363620ad930f60c3551f3);
+        
+    
+            var circle_140c724eb03ef3ebec42f247eacc258e = L.circle(
+                [48.8534951, 2.3483915],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;lightblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;lightblue&quot;, &quot;fillOpacity&quot;: 0.1, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 10000, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_ffb9e2e5b09363620ad930f60c3551f3);
+        
+    
+        var popup_16578a46b317c8b0c8f0e20103a62452 = L.popup({&quot;maxWidth&quot;: &quot;100%&quot;});
+
+        
+            
+                var html_f886e0289b8db24eff2f5992aac68881 = $(`&lt;div id=&quot;html_f886e0289b8db24eff2f5992aac68881&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Search area (10km radius)&lt;/div&gt;`)[0];
+                popup_16578a46b317c8b0c8f0e20103a62452.setContent(html_f886e0289b8db24eff2f5992aac68881);
+            
+        
+
+        circle_140c724eb03ef3ebec42f247eacc258e.bindPopup(popup_16578a46b317c8b0c8f0e20103a62452)
+        ;
+
+        
+    
+    
+            L.control.fullscreen(
+                {&quot;forceSeparateButton&quot;: true, &quot;position&quot;: &quot;topright&quot;, &quot;title&quot;: &quot;Fullscreen&quot;, &quot;titleCancel&quot;: &quot;Exit fullscreen&quot;}
+            ).addTo(map_ffb9e2e5b09363620ad930f60c3551f3);
+        
+    
+            var measure_control_bc30674296e066b238d6f9a77b2568d6 = new L.Control.Measure(
+                {&quot;position&quot;: &quot;topleft&quot;, &quot;primaryAreaUnit&quot;: &quot;sqmeters&quot;, &quot;primaryLengthUnit&quot;: &quot;kilometers&quot;, &quot;secondaryAreaUnit&quot;: &quot;acres&quot;, &quot;secondaryLengthUnit&quot;: &quot;miles&quot;});
+            map_ffb9e2e5b09363620ad930f60c3551f3.addControl(measure_control_bc30674296e066b238d6f9a77b2568d6);
+
+            // Workaround for using this plugin with Leaflet&gt;=1.8.0
+            // https://github.com/ljagis/leaflet-measure/issues/171
+            L.Control.Measure.include({
+                _setCaptureMarkerIcon: function () {
+                    // disable autopan
+                    this._captureMarker.options.autoPanOnFocus = false;
+                    // default function
+                    this._captureMarker.setIcon(
+                        L.divIcon({
+                            iconSize: this._map.getSize().multiplyBy(2)
+                        })
+                    );
+                },
+            });
+
+        
+&lt;/script&gt;
+&lt;/html&gt;" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe></div></div>
+        </div>
+    </body>
+    </html>
+    

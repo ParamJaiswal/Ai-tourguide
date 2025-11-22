@@ -1,0 +1,678 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Bangalore - Tourist Map</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                display: flex;
+                height: 100vh;
+                overflow: hidden;
+            }
+            
+            .sidebar {
+                width: 350px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 20px;
+                overflow-y: auto;
+                box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            }
+            
+            .sidebar h1 {
+                font-size: 28px;
+                margin-bottom: 10px;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            }
+            
+            .sidebar h2 {
+                font-size: 16px;
+                font-weight: 300;
+                margin-bottom: 20px;
+                opacity: 0.9;
+            }
+            
+            .info-section {
+                background: rgba(255,255,255,0.1);
+                border-radius: 10px;
+                padding: 15px;
+                margin-bottom: 20px;
+                backdrop-filter: blur(10px);
+            }
+            
+            .info-section h3 {
+                font-size: 18px;
+                margin-bottom: 15px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            
+            .weather-info {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .weather-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px;
+                background: rgba(255,255,255,0.1);
+                border-radius: 5px;
+            }
+            
+            .weather-label {
+                font-size: 14px;
+                opacity: 0.9;
+            }
+            
+            .weather-value {
+                font-size: 18px;
+                font-weight: bold;
+            }
+            
+            .places-list {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .place-item {
+                background: rgba(255,255,255,0.1);
+                border-radius: 8px;
+                padding: 12px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                transition: all 0.3s ease;
+                cursor: pointer;
+            }
+            
+            .place-item:hover {
+                background: rgba(255,255,255,0.2);
+                transform: translateX(5px);
+            }
+            
+            .place-number {
+                width: 30px;
+                height: 30px;
+                background: white;
+                color: #667eea;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                flex-shrink: 0;
+            }
+            
+            .place-info {
+                flex: 1;
+            }
+            
+            .place-name {
+                font-size: 15px;
+                font-weight: 500;
+                margin-bottom: 4px;
+            }
+            
+            .place-type {
+                font-size: 12px;
+                opacity: 0.8;
+            }
+            
+            .map-container {
+                flex: 1;
+                position: relative;
+            }
+            
+            .map-container iframe {
+                width: 100%;
+                height: 100%;
+                border: none;
+            }
+            
+            .stats {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+            
+            .stat-box {
+                flex: 1;
+                background: rgba(255,255,255,0.1);
+                padding: 10px;
+                border-radius: 8px;
+                text-align: center;
+            }
+            
+            .stat-number {
+                font-size: 24px;
+                font-weight: bold;
+                display: block;
+            }
+            
+            .stat-label {
+                font-size: 12px;
+                opacity: 0.8;
+                display: block;
+                margin-top: 5px;
+            }
+            
+            @media (max-width: 768px) {
+                body {
+                    flex-direction: column;
+                }
+                
+                .sidebar {
+                    width: 100%;
+                    max-height: 40vh;
+                }
+                
+                .map-container {
+                    height: 60vh;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="sidebar">
+            <h1>📍 Bangalore</h1>
+            <h2>Tourist Attractions Map</h2>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <span class="stat-number">5</span>
+                    <span class="stat-label">Places</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">10km</span>
+                    <span class="stat-label">Radius</span>
+                </div>
+            </div>
+            
+            
+        <div class="info-section">
+            <h3>🌤️ Current Weather</h3>
+            <div class="weather-info">
+                <div class="weather-item">
+                    <span class="weather-label">Temperature</span>
+                    <span class="weather-value">25.0°C</span>
+                </div>
+                <div class="weather-item">
+                    <span class="weather-label">Rain Chance</span>
+                    <span class="weather-value">30%</span>
+                </div>
+            </div>
+        </div>
+        
+            
+            <div class="info-section">
+                <h3>🏛️ Top Attractions</h3>
+                <div class="places-list">
+                    
+        <div class="place-item">
+            <div class="place-number">1</div>
+            <div class="place-info">
+                <div class="place-name">Rajarajeshwari Arch</div>
+                <div class="place-type">Attraction</div>
+            </div>
+        </div>
+        
+        <div class="place-item">
+            <div class="place-number">2</div>
+            <div class="place-info">
+                <div class="place-name">Chickpet Cross</div>
+                <div class="place-type">Attraction</div>
+            </div>
+        </div>
+        
+        <div class="place-item">
+            <div class="place-number">3</div>
+            <div class="place-info">
+                <div class="place-name">Lalbagh Glasshouse</div>
+                <div class="place-type">Attraction</div>
+            </div>
+        </div>
+        
+        <div class="place-item">
+            <div class="place-number">4</div>
+            <div class="place-info">
+                <div class="place-name">Krishnarajapuram Hanging Bridge</div>
+                <div class="place-type">Attraction</div>
+            </div>
+        </div>
+        
+        <div class="place-item">
+            <div class="place-number">5</div>
+            <div class="place-info">
+                <div class="place-name">Shivaji Statue</div>
+                <div class="place-type">Artwork</div>
+            </div>
+        </div>
+        
+                </div>
+            </div>
+            
+            <div class="info-section" style="background: rgba(255,255,255,0.05);">
+                <p style="font-size: 12px; opacity: 0.8; line-height: 1.6;">
+                    💡 <b>Tip:</b> Click on markers for more details. Use the fullscreen button and measure tool on the map for better exploration.
+                </p>
+            </div>
+        </div>
+        
+        <div class="map-container">
+            <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -> Trust Notebook</span><iframe srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    
+    &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;
+    
+        &lt;script&gt;
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        &lt;/script&gt;
+    
+    &lt;style&gt;html, body {width: 100%;height: 100%;margin: 0;padding: 0;}&lt;/style&gt;
+    &lt;style&gt;#map {position:absolute;top:0;bottom:0;right:0;left:0;}&lt;/style&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/&gt;
+    
+            &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
+            &lt;style&gt;
+                #map_d07d22cc3196d347029703a999bcb0d9 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            &lt;/style&gt;
+        
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css&quot;/&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.css&quot;/&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    
+    
+    &lt;div style=&quot;position: fixed; 
+                bottom: 50px; right: 50px; 
+                width: 250px; 
+                background-color: white; 
+                border: 2px solid grey; 
+                border-radius: 5px;
+                z-index: 9999; 
+                font-size: 14px;
+                padding: 10px;
+                box-shadow: 0 0 15px rgba(0,0,0,0.2);&quot;&gt;
+        &lt;h4 style=&quot;margin: 0 0 10px 0; color: #2c3e50;&quot;&gt;🗺️ Map Legend&lt;/h4&gt;
+        &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;i class=&quot;fa fa-home&quot; style=&quot;color: red;&quot;&gt;&lt;/i&gt; City Center&lt;/p&gt;
+        &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;i class=&quot;fa fa-star&quot; style=&quot;color: blue;&quot;&gt;&lt;/i&gt; Tourist Attraction&lt;/p&gt;
+        &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;i class=&quot;fa fa-university&quot; style=&quot;color: purple;&quot;&gt;&lt;/i&gt; Museum&lt;/p&gt;
+        &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;i class=&quot;fa fa-tree&quot; style=&quot;color: green;&quot;&gt;&lt;/i&gt; Park&lt;/p&gt;
+        &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;i class=&quot;fa fa-monument&quot; style=&quot;color: darkblue;&quot;&gt;&lt;/i&gt; Monument&lt;/p&gt;
+        &lt;hr style=&quot;margin: 10px 0;&quot;&gt;
+        &lt;p style=&quot;margin: 5px 0; font-size: 12px; color: #7f8c8d;&quot;&gt;
+            &lt;b&gt;5&lt;/b&gt; places found&lt;br&gt;
+            Click markers for details
+        &lt;/p&gt;
+    &lt;/div&gt;
+    
+    
+    &lt;style&gt;
+        .leaflet-popup-content-wrapper {
+            border-radius: 8px;
+        }
+        .leaflet-popup-content h3, .leaflet-popup-content h4 {
+            margin-top: 0;
+        }
+    &lt;/style&gt;
+    
+    
+            &lt;div class=&quot;folium-map&quot; id=&quot;map_d07d22cc3196d347029703a999bcb0d9&quot; &gt;&lt;/div&gt;
+        
+&lt;/body&gt;
+&lt;script&gt;
+    
+    
+            var map_d07d22cc3196d347029703a999bcb0d9 = L.map(
+                &quot;map_d07d22cc3196d347029703a999bcb0d9&quot;,
+                {
+                    center: [12.9767936, 77.590082],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 12,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+            L.control.scale().addTo(map_d07d22cc3196d347029703a999bcb0d9);
+
+            
+
+        
+    
+            var tile_layer_9a235aea9364fa668a880867149b9c0d = L.tileLayer(
+                &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
+                {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
+            );
+        
+    
+            tile_layer_9a235aea9364fa668a880867149b9c0d.addTo(map_d07d22cc3196d347029703a999bcb0d9);
+        
+    
+            var marker_374878c6c9c2344d27ff5472605f7a53 = L.marker(
+                [12.9767936, 77.590082],
+                {}
+            ).addTo(map_d07d22cc3196d347029703a999bcb0d9);
+        
+    
+            var icon_2dd68a17558cb8ad8abf2e0e37e06c9f = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;home&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;red&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_374878c6c9c2344d27ff5472605f7a53.setIcon(icon_2dd68a17558cb8ad8abf2e0e37e06c9f);
+        
+    
+        var popup_985c126a85b05638a852f429fe9d1858 = L.popup({&quot;maxWidth&quot;: 300});
+
+        
+            
+                var html_f72bb8351c6ad16812cb69732cebde69 = $(`&lt;div id=&quot;html_f72bb8351c6ad16812cb69732cebde69&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;     &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 200px;&quot;&gt;         &lt;h3 style=&quot;color: #2c3e50; margin: 0 0 10px 0;&quot;&gt;Bangalore&lt;/h3&gt;         &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;b&gt;📍 City Center&lt;/b&gt;&lt;/p&gt;              &lt;hr style=&quot;margin: 10px 0;&quot;&gt;         &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;b&gt;🌡️ Temperature:&lt;/b&gt; 25.0°C&lt;/p&gt;         &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;b&gt;🌧️ Rain Chance:&lt;/b&gt; 30%&lt;/p&gt;         &lt;/div&gt;&lt;/div&gt;`)[0];
+                popup_985c126a85b05638a852f429fe9d1858.setContent(html_f72bb8351c6ad16812cb69732cebde69);
+            
+        
+
+        marker_374878c6c9c2344d27ff5472605f7a53.bindPopup(popup_985c126a85b05638a852f429fe9d1858)
+        ;
+
+        
+    
+    
+            marker_374878c6c9c2344d27ff5472605f7a53.bindTooltip(
+                `&lt;div&gt;
+                     Bangalore (City Center)
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var marker_7204c907a109df71383e2f6c316a130f = L.marker(
+                [12.9359565, 77.5183096],
+                {}
+            ).addTo(map_d07d22cc3196d347029703a999bcb0d9);
+        
+    
+            var icon_c4f219e874900e3a0e25bfecf3c76dd3 = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;star&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;blue&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_7204c907a109df71383e2f6c316a130f.setIcon(icon_c4f219e874900e3a0e25bfecf3c76dd3);
+        
+    
+        var popup_d1d8223a06d7ebd1cb7ca930493d9332 = L.popup({&quot;maxWidth&quot;: 250});
+
+        
+            
+                var html_819bdc23c91298d8f9563881b3ee3506 = $(`&lt;div id=&quot;html_819bdc23c91298d8f9563881b3ee3506&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;         &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 180px;&quot;&gt;             &lt;h4 style=&quot;color: #2c3e50; margin: 0 0 8px 0;&quot;&gt;Rajarajeshwari Arch&lt;/h4&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Type:&lt;/b&gt; Attraction&lt;/p&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Location:&lt;/b&gt; 12.9360, 77.5183&lt;/p&gt;             &lt;p style=&quot;margin: 8px 0 0 0; font-size: 12px; color: #95a5a6;&quot;&gt;#1 on the list&lt;/p&gt;         &lt;/div&gt;         &lt;/div&gt;`)[0];
+                popup_d1d8223a06d7ebd1cb7ca930493d9332.setContent(html_819bdc23c91298d8f9563881b3ee3506);
+            
+        
+
+        marker_7204c907a109df71383e2f6c316a130f.bindPopup(popup_d1d8223a06d7ebd1cb7ca930493d9332)
+        ;
+
+        
+    
+    
+            marker_7204c907a109df71383e2f6c316a130f.bindTooltip(
+                `&lt;div&gt;
+                     #1: Rajarajeshwari Arch
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var poly_line_a8c089e9d77ff5016969ffbaabb77348 = L.polyline(
+                [[12.9767936, 77.590082], [12.9359565, 77.5183096]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;gray&quot;, &quot;dashArray&quot;: &quot;5&quot;, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;gray&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.3, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(map_d07d22cc3196d347029703a999bcb0d9);
+        
+    
+            var marker_a88b9c91aa11cb7d1ea23de9ee31b741 = L.marker(
+                [12.9680027, 77.578642],
+                {}
+            ).addTo(map_d07d22cc3196d347029703a999bcb0d9);
+        
+    
+            var icon_88cd8059cb03e9442b16171fdaa184bc = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;star&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;blue&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_a88b9c91aa11cb7d1ea23de9ee31b741.setIcon(icon_88cd8059cb03e9442b16171fdaa184bc);
+        
+    
+        var popup_80a32896c2a220bc021dc3037db932f4 = L.popup({&quot;maxWidth&quot;: 250});
+
+        
+            
+                var html_ace801cd03554c26dd91c6c434d643bc = $(`&lt;div id=&quot;html_ace801cd03554c26dd91c6c434d643bc&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;         &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 180px;&quot;&gt;             &lt;h4 style=&quot;color: #2c3e50; margin: 0 0 8px 0;&quot;&gt;Chickpet Cross&lt;/h4&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Type:&lt;/b&gt; Attraction&lt;/p&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Location:&lt;/b&gt; 12.9680, 77.5786&lt;/p&gt;             &lt;p style=&quot;margin: 8px 0 0 0; font-size: 12px; color: #95a5a6;&quot;&gt;#2 on the list&lt;/p&gt;         &lt;/div&gt;         &lt;/div&gt;`)[0];
+                popup_80a32896c2a220bc021dc3037db932f4.setContent(html_ace801cd03554c26dd91c6c434d643bc);
+            
+        
+
+        marker_a88b9c91aa11cb7d1ea23de9ee31b741.bindPopup(popup_80a32896c2a220bc021dc3037db932f4)
+        ;
+
+        
+    
+    
+            marker_a88b9c91aa11cb7d1ea23de9ee31b741.bindTooltip(
+                `&lt;div&gt;
+                     #2: Chickpet Cross
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var poly_line_262004f159b3a2a9ef11e348ad958ca6 = L.polyline(
+                [[12.9767936, 77.590082], [12.9680027, 77.578642]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;gray&quot;, &quot;dashArray&quot;: &quot;5&quot;, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;gray&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.3, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(map_d07d22cc3196d347029703a999bcb0d9);
+        
+    
+            var marker_fea827f018bfeb5eec913287f407c099 = L.marker(
+                [12.9498004, 77.5865608],
+                {}
+            ).addTo(map_d07d22cc3196d347029703a999bcb0d9);
+        
+    
+            var icon_955697b8bead3a15d005fe8d29ed132b = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;star&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;blue&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_fea827f018bfeb5eec913287f407c099.setIcon(icon_955697b8bead3a15d005fe8d29ed132b);
+        
+    
+        var popup_5df94f16570226ec41869344da18136a = L.popup({&quot;maxWidth&quot;: 250});
+
+        
+            
+                var html_9822052be563bbff8541e03e813eab4e = $(`&lt;div id=&quot;html_9822052be563bbff8541e03e813eab4e&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;         &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 180px;&quot;&gt;             &lt;h4 style=&quot;color: #2c3e50; margin: 0 0 8px 0;&quot;&gt;Lalbagh Glasshouse&lt;/h4&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Type:&lt;/b&gt; Attraction&lt;/p&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Location:&lt;/b&gt; 12.9498, 77.5866&lt;/p&gt;             &lt;p style=&quot;margin: 8px 0 0 0; font-size: 12px; color: #95a5a6;&quot;&gt;#3 on the list&lt;/p&gt;         &lt;/div&gt;         &lt;/div&gt;`)[0];
+                popup_5df94f16570226ec41869344da18136a.setContent(html_9822052be563bbff8541e03e813eab4e);
+            
+        
+
+        marker_fea827f018bfeb5eec913287f407c099.bindPopup(popup_5df94f16570226ec41869344da18136a)
+        ;
+
+        
+    
+    
+            marker_fea827f018bfeb5eec913287f407c099.bindTooltip(
+                `&lt;div&gt;
+                     #3: Lalbagh Glasshouse
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var poly_line_bf272f4de0c489e28ab2a26b464d654f = L.polyline(
+                [[12.9767936, 77.590082], [12.9498004, 77.5865608]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;gray&quot;, &quot;dashArray&quot;: &quot;5&quot;, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;gray&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.3, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(map_d07d22cc3196d347029703a999bcb0d9);
+        
+    
+            var marker_4fc1e0c13253076432a02a36393a5117 = L.marker(
+                [13.0010382, 77.6778627],
+                {}
+            ).addTo(map_d07d22cc3196d347029703a999bcb0d9);
+        
+    
+            var icon_3ab522a84691977c9389d710a6a962c3 = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;star&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;blue&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_4fc1e0c13253076432a02a36393a5117.setIcon(icon_3ab522a84691977c9389d710a6a962c3);
+        
+    
+        var popup_7961ab041c1b15565976a7f69af6ee93 = L.popup({&quot;maxWidth&quot;: 250});
+
+        
+            
+                var html_b742c46b428b760c8978baa49b33d43b = $(`&lt;div id=&quot;html_b742c46b428b760c8978baa49b33d43b&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;         &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 180px;&quot;&gt;             &lt;h4 style=&quot;color: #2c3e50; margin: 0 0 8px 0;&quot;&gt;Krishnarajapuram Hanging Bridge&lt;/h4&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Type:&lt;/b&gt; Attraction&lt;/p&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Location:&lt;/b&gt; 13.0010, 77.6779&lt;/p&gt;             &lt;p style=&quot;margin: 8px 0 0 0; font-size: 12px; color: #95a5a6;&quot;&gt;#4 on the list&lt;/p&gt;         &lt;/div&gt;         &lt;/div&gt;`)[0];
+                popup_7961ab041c1b15565976a7f69af6ee93.setContent(html_b742c46b428b760c8978baa49b33d43b);
+            
+        
+
+        marker_4fc1e0c13253076432a02a36393a5117.bindPopup(popup_7961ab041c1b15565976a7f69af6ee93)
+        ;
+
+        
+    
+    
+            marker_4fc1e0c13253076432a02a36393a5117.bindTooltip(
+                `&lt;div&gt;
+                     #4: Krishnarajapuram Hanging Bridge
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var poly_line_33e6a82b303e8e1340ed9d0280445bad = L.polyline(
+                [[12.9767936, 77.590082], [13.0010382, 77.6778627]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;gray&quot;, &quot;dashArray&quot;: &quot;5&quot;, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;gray&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.3, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(map_d07d22cc3196d347029703a999bcb0d9);
+        
+    
+            var marker_7db2da2d7af975012a3525790f71e270 = L.marker(
+                [13.0067586, 77.5785939],
+                {}
+            ).addTo(map_d07d22cc3196d347029703a999bcb0d9);
+        
+    
+            var icon_14555ed27bfbb200d21fd824dcd3a813 = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;star&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;blue&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_7db2da2d7af975012a3525790f71e270.setIcon(icon_14555ed27bfbb200d21fd824dcd3a813);
+        
+    
+        var popup_7099ab4d9b65a8dd0fe3bc21cfccb2e4 = L.popup({&quot;maxWidth&quot;: 250});
+
+        
+            
+                var html_5c345fb86fca47fad36b778b77aaccff = $(`&lt;div id=&quot;html_5c345fb86fca47fad36b778b77aaccff&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;         &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 180px;&quot;&gt;             &lt;h4 style=&quot;color: #2c3e50; margin: 0 0 8px 0;&quot;&gt;Shivaji Statue&lt;/h4&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Type:&lt;/b&gt; Artwork&lt;/p&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Location:&lt;/b&gt; 13.0068, 77.5786&lt;/p&gt;             &lt;p style=&quot;margin: 8px 0 0 0; font-size: 12px; color: #95a5a6;&quot;&gt;#5 on the list&lt;/p&gt;         &lt;/div&gt;         &lt;/div&gt;`)[0];
+                popup_7099ab4d9b65a8dd0fe3bc21cfccb2e4.setContent(html_5c345fb86fca47fad36b778b77aaccff);
+            
+        
+
+        marker_7db2da2d7af975012a3525790f71e270.bindPopup(popup_7099ab4d9b65a8dd0fe3bc21cfccb2e4)
+        ;
+
+        
+    
+    
+            marker_7db2da2d7af975012a3525790f71e270.bindTooltip(
+                `&lt;div&gt;
+                     #5: Shivaji Statue
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var poly_line_d720e53a566edfe4cd14116b18abfe96 = L.polyline(
+                [[12.9767936, 77.590082], [13.0067586, 77.5785939]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;gray&quot;, &quot;dashArray&quot;: &quot;5&quot;, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;gray&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.3, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(map_d07d22cc3196d347029703a999bcb0d9);
+        
+    
+            var circle_cfb134a9aedc1e77b82d8fef9fe71a2c = L.circle(
+                [12.9767936, 77.590082],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;lightblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;lightblue&quot;, &quot;fillOpacity&quot;: 0.1, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 10000, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_d07d22cc3196d347029703a999bcb0d9);
+        
+    
+        var popup_89d5942c1a732c231d9a47921f67bb09 = L.popup({&quot;maxWidth&quot;: &quot;100%&quot;});
+
+        
+            
+                var html_655bf15b891831578a5da8442dc264b1 = $(`&lt;div id=&quot;html_655bf15b891831578a5da8442dc264b1&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Search area (10km radius)&lt;/div&gt;`)[0];
+                popup_89d5942c1a732c231d9a47921f67bb09.setContent(html_655bf15b891831578a5da8442dc264b1);
+            
+        
+
+        circle_cfb134a9aedc1e77b82d8fef9fe71a2c.bindPopup(popup_89d5942c1a732c231d9a47921f67bb09)
+        ;
+
+        
+    
+    
+            L.control.fullscreen(
+                {&quot;forceSeparateButton&quot;: true, &quot;position&quot;: &quot;topright&quot;, &quot;title&quot;: &quot;Fullscreen&quot;, &quot;titleCancel&quot;: &quot;Exit fullscreen&quot;}
+            ).addTo(map_d07d22cc3196d347029703a999bcb0d9);
+        
+    
+            var measure_control_6e733eb8031feb51bd8940ad26d48a11 = new L.Control.Measure(
+                {&quot;position&quot;: &quot;topleft&quot;, &quot;primaryAreaUnit&quot;: &quot;sqmeters&quot;, &quot;primaryLengthUnit&quot;: &quot;kilometers&quot;, &quot;secondaryAreaUnit&quot;: &quot;acres&quot;, &quot;secondaryLengthUnit&quot;: &quot;miles&quot;});
+            map_d07d22cc3196d347029703a999bcb0d9.addControl(measure_control_6e733eb8031feb51bd8940ad26d48a11);
+
+            // Workaround for using this plugin with Leaflet&gt;=1.8.0
+            // https://github.com/ljagis/leaflet-measure/issues/171
+            L.Control.Measure.include({
+                _setCaptureMarkerIcon: function () {
+                    // disable autopan
+                    this._captureMarker.options.autoPanOnFocus = false;
+                    // default function
+                    this._captureMarker.setIcon(
+                        L.divIcon({
+                            iconSize: this._map.getSize().multiplyBy(2)
+                        })
+                    );
+                },
+            });
+
+        
+&lt;/script&gt;
+&lt;/html&gt;" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe></div></div>
+        </div>
+    </body>
+    </html>
+    

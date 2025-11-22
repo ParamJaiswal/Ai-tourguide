@@ -1,0 +1,678 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>New York - Tourist Map</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                display: flex;
+                height: 100vh;
+                overflow: hidden;
+            }
+            
+            .sidebar {
+                width: 350px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 20px;
+                overflow-y: auto;
+                box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            }
+            
+            .sidebar h1 {
+                font-size: 28px;
+                margin-bottom: 10px;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            }
+            
+            .sidebar h2 {
+                font-size: 16px;
+                font-weight: 300;
+                margin-bottom: 20px;
+                opacity: 0.9;
+            }
+            
+            .info-section {
+                background: rgba(255,255,255,0.1);
+                border-radius: 10px;
+                padding: 15px;
+                margin-bottom: 20px;
+                backdrop-filter: blur(10px);
+            }
+            
+            .info-section h3 {
+                font-size: 18px;
+                margin-bottom: 15px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            
+            .weather-info {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .weather-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px;
+                background: rgba(255,255,255,0.1);
+                border-radius: 5px;
+            }
+            
+            .weather-label {
+                font-size: 14px;
+                opacity: 0.9;
+            }
+            
+            .weather-value {
+                font-size: 18px;
+                font-weight: bold;
+            }
+            
+            .places-list {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .place-item {
+                background: rgba(255,255,255,0.1);
+                border-radius: 8px;
+                padding: 12px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                transition: all 0.3s ease;
+                cursor: pointer;
+            }
+            
+            .place-item:hover {
+                background: rgba(255,255,255,0.2);
+                transform: translateX(5px);
+            }
+            
+            .place-number {
+                width: 30px;
+                height: 30px;
+                background: white;
+                color: #667eea;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                flex-shrink: 0;
+            }
+            
+            .place-info {
+                flex: 1;
+            }
+            
+            .place-name {
+                font-size: 15px;
+                font-weight: 500;
+                margin-bottom: 4px;
+            }
+            
+            .place-type {
+                font-size: 12px;
+                opacity: 0.8;
+            }
+            
+            .map-container {
+                flex: 1;
+                position: relative;
+            }
+            
+            .map-container iframe {
+                width: 100%;
+                height: 100%;
+                border: none;
+            }
+            
+            .stats {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+            
+            .stat-box {
+                flex: 1;
+                background: rgba(255,255,255,0.1);
+                padding: 10px;
+                border-radius: 8px;
+                text-align: center;
+            }
+            
+            .stat-number {
+                font-size: 24px;
+                font-weight: bold;
+                display: block;
+            }
+            
+            .stat-label {
+                font-size: 12px;
+                opacity: 0.8;
+                display: block;
+                margin-top: 5px;
+            }
+            
+            @media (max-width: 768px) {
+                body {
+                    flex-direction: column;
+                }
+                
+                .sidebar {
+                    width: 100%;
+                    max-height: 40vh;
+                }
+                
+                .map-container {
+                    height: 60vh;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="sidebar">
+            <h1>📍 New York</h1>
+            <h2>Tourist Attractions Map</h2>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <span class="stat-number">5</span>
+                    <span class="stat-label">Places</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">10km</span>
+                    <span class="stat-label">Radius</span>
+                </div>
+            </div>
+            
+            
+        <div class="info-section">
+            <h3>🌤️ Current Weather</h3>
+            <div class="weather-info">
+                <div class="weather-item">
+                    <span class="weather-label">Temperature</span>
+                    <span class="weather-value">25.0°C</span>
+                </div>
+                <div class="weather-item">
+                    <span class="weather-label">Rain Chance</span>
+                    <span class="weather-value">30%</span>
+                </div>
+            </div>
+        </div>
+        
+            
+            <div class="info-section">
+                <h3>🏛️ Top Attractions</h3>
+                <div class="places-list">
+                    
+        <div class="place-item">
+            <div class="place-number">1</div>
+            <div class="place-info">
+                <div class="place-name">SoHo</div>
+                <div class="place-type">Attraction</div>
+            </div>
+        </div>
+        
+        <div class="place-item">
+            <div class="place-number">2</div>
+            <div class="place-info">
+                <div class="place-name">South Street Seaport</div>
+                <div class="place-type">Attraction</div>
+            </div>
+        </div>
+        
+        <div class="place-item">
+            <div class="place-number">3</div>
+            <div class="place-info">
+                <div class="place-name">South Street Seaport Historic District</div>
+                <div class="place-type">Maritime</div>
+            </div>
+        </div>
+        
+        <div class="place-item">
+            <div class="place-number">4</div>
+            <div class="place-info">
+                <div class="place-name">Pumphouse Park</div>
+                <div class="place-type">Park</div>
+            </div>
+        </div>
+        
+        <div class="place-item">
+            <div class="place-number">5</div>
+            <div class="place-info">
+                <div class="place-name">Chatham Square</div>
+                <div class="place-type">Park</div>
+            </div>
+        </div>
+        
+                </div>
+            </div>
+            
+            <div class="info-section" style="background: rgba(255,255,255,0.05);">
+                <p style="font-size: 12px; opacity: 0.8; line-height: 1.6;">
+                    💡 <b>Tip:</b> Click on markers for more details. Use the fullscreen button and measure tool on the map for better exploration.
+                </p>
+            </div>
+        </div>
+        
+        <div class="map-container">
+            <div style="width:100%;"><div style="position:relative;width:100%;height:0;padding-bottom:60%;"><span style="color:#565656">Make this Notebook Trusted to load map: File -> Trust Notebook</span><iframe srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    
+    &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;
+    
+        &lt;script&gt;
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        &lt;/script&gt;
+    
+    &lt;style&gt;html, body {width: 100%;height: 100%;margin: 0;padding: 0;}&lt;/style&gt;
+    &lt;style&gt;#map {position:absolute;top:0;bottom:0;right:0;left:0;}&lt;/style&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-3.7.1.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css&quot;/&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css&quot;/&gt;
+    
+            &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
+            &lt;style&gt;
+                #map_384d2184024ba49fa230ec436f30e8d3 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            &lt;/style&gt;
+        
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css&quot;/&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.js&quot;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.css&quot;/&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    
+    
+    &lt;div style=&quot;position: fixed; 
+                bottom: 50px; right: 50px; 
+                width: 250px; 
+                background-color: white; 
+                border: 2px solid grey; 
+                border-radius: 5px;
+                z-index: 9999; 
+                font-size: 14px;
+                padding: 10px;
+                box-shadow: 0 0 15px rgba(0,0,0,0.2);&quot;&gt;
+        &lt;h4 style=&quot;margin: 0 0 10px 0; color: #2c3e50;&quot;&gt;🗺️ Map Legend&lt;/h4&gt;
+        &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;i class=&quot;fa fa-home&quot; style=&quot;color: red;&quot;&gt;&lt;/i&gt; City Center&lt;/p&gt;
+        &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;i class=&quot;fa fa-star&quot; style=&quot;color: blue;&quot;&gt;&lt;/i&gt; Tourist Attraction&lt;/p&gt;
+        &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;i class=&quot;fa fa-university&quot; style=&quot;color: purple;&quot;&gt;&lt;/i&gt; Museum&lt;/p&gt;
+        &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;i class=&quot;fa fa-tree&quot; style=&quot;color: green;&quot;&gt;&lt;/i&gt; Park&lt;/p&gt;
+        &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;i class=&quot;fa fa-monument&quot; style=&quot;color: darkblue;&quot;&gt;&lt;/i&gt; Monument&lt;/p&gt;
+        &lt;hr style=&quot;margin: 10px 0;&quot;&gt;
+        &lt;p style=&quot;margin: 5px 0; font-size: 12px; color: #7f8c8d;&quot;&gt;
+            &lt;b&gt;5&lt;/b&gt; places found&lt;br&gt;
+            Click markers for details
+        &lt;/p&gt;
+    &lt;/div&gt;
+    
+    
+    &lt;style&gt;
+        .leaflet-popup-content-wrapper {
+            border-radius: 8px;
+        }
+        .leaflet-popup-content h3, .leaflet-popup-content h4 {
+            margin-top: 0;
+        }
+    &lt;/style&gt;
+    
+    
+            &lt;div class=&quot;folium-map&quot; id=&quot;map_384d2184024ba49fa230ec436f30e8d3&quot; &gt;&lt;/div&gt;
+        
+&lt;/body&gt;
+&lt;script&gt;
+    
+    
+            var map_384d2184024ba49fa230ec436f30e8d3 = L.map(
+                &quot;map_384d2184024ba49fa230ec436f30e8d3&quot;,
+                {
+                    center: [40.7127281, -74.0060152],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 12,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+            L.control.scale().addTo(map_384d2184024ba49fa230ec436f30e8d3);
+
+            
+
+        
+    
+            var tile_layer_c99b284b109ce805f164672941e63b8e = L.tileLayer(
+                &quot;https://tile.openstreetmap.org/{z}/{x}/{y}.png&quot;,
+                {&quot;attribution&quot;: &quot;\u0026copy; \u003ca href=\&quot;https://www.openstreetmap.org/copyright\&quot;\u003eOpenStreetMap\u003c/a\u003e contributors&quot;, &quot;detectRetina&quot;: false, &quot;maxNativeZoom&quot;: 19, &quot;maxZoom&quot;: 19, &quot;minZoom&quot;: 0, &quot;noWrap&quot;: false, &quot;opacity&quot;: 1, &quot;subdomains&quot;: &quot;abc&quot;, &quot;tms&quot;: false}
+            );
+        
+    
+            tile_layer_c99b284b109ce805f164672941e63b8e.addTo(map_384d2184024ba49fa230ec436f30e8d3);
+        
+    
+            var marker_f9cb905fdc4bd1d2a9b17e56b649971d = L.marker(
+                [40.7127281, -74.0060152],
+                {}
+            ).addTo(map_384d2184024ba49fa230ec436f30e8d3);
+        
+    
+            var icon_704289fa63d8274f7e930a713a9f13bd = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;home&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;red&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_f9cb905fdc4bd1d2a9b17e56b649971d.setIcon(icon_704289fa63d8274f7e930a713a9f13bd);
+        
+    
+        var popup_9e5af4be6d0a4aecd22c849e6ea616f9 = L.popup({&quot;maxWidth&quot;: 300});
+
+        
+            
+                var html_3cc0259bc67ff0df68fdcd70fdfa2f93 = $(`&lt;div id=&quot;html_3cc0259bc67ff0df68fdcd70fdfa2f93&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;     &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 200px;&quot;&gt;         &lt;h3 style=&quot;color: #2c3e50; margin: 0 0 10px 0;&quot;&gt;New York&lt;/h3&gt;         &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;b&gt;📍 City Center&lt;/b&gt;&lt;/p&gt;              &lt;hr style=&quot;margin: 10px 0;&quot;&gt;         &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;b&gt;🌡️ Temperature:&lt;/b&gt; 25.0°C&lt;/p&gt;         &lt;p style=&quot;margin: 5px 0;&quot;&gt;&lt;b&gt;🌧️ Rain Chance:&lt;/b&gt; 30%&lt;/p&gt;         &lt;/div&gt;&lt;/div&gt;`)[0];
+                popup_9e5af4be6d0a4aecd22c849e6ea616f9.setContent(html_3cc0259bc67ff0df68fdcd70fdfa2f93);
+            
+        
+
+        marker_f9cb905fdc4bd1d2a9b17e56b649971d.bindPopup(popup_9e5af4be6d0a4aecd22c849e6ea616f9)
+        ;
+
+        
+    
+    
+            marker_f9cb905fdc4bd1d2a9b17e56b649971d.bindTooltip(
+                `&lt;div&gt;
+                     New York (City Center)
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var marker_135acc122bacab9397579cd29e76ee52 = L.marker(
+                [40.72288, -73.9987505],
+                {}
+            ).addTo(map_384d2184024ba49fa230ec436f30e8d3);
+        
+    
+            var icon_a3a8a85995c3fa89d9693ccdbd647f59 = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;star&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;blue&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_135acc122bacab9397579cd29e76ee52.setIcon(icon_a3a8a85995c3fa89d9693ccdbd647f59);
+        
+    
+        var popup_5143af6485b6c5ef43665734bbf016ff = L.popup({&quot;maxWidth&quot;: 250});
+
+        
+            
+                var html_33f0bd33e00315d5cb05cdd29581134e = $(`&lt;div id=&quot;html_33f0bd33e00315d5cb05cdd29581134e&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;         &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 180px;&quot;&gt;             &lt;h4 style=&quot;color: #2c3e50; margin: 0 0 8px 0;&quot;&gt;SoHo&lt;/h4&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Type:&lt;/b&gt; Attraction&lt;/p&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Location:&lt;/b&gt; 40.7229, -73.9988&lt;/p&gt;             &lt;p style=&quot;margin: 8px 0 0 0; font-size: 12px; color: #95a5a6;&quot;&gt;#1 on the list&lt;/p&gt;         &lt;/div&gt;         &lt;/div&gt;`)[0];
+                popup_5143af6485b6c5ef43665734bbf016ff.setContent(html_33f0bd33e00315d5cb05cdd29581134e);
+            
+        
+
+        marker_135acc122bacab9397579cd29e76ee52.bindPopup(popup_5143af6485b6c5ef43665734bbf016ff)
+        ;
+
+        
+    
+    
+            marker_135acc122bacab9397579cd29e76ee52.bindTooltip(
+                `&lt;div&gt;
+                     #1: SoHo
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var poly_line_29427b127c035816d44573f841e1f733 = L.polyline(
+                [[40.7127281, -74.0060152], [40.72288, -73.9987505]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;gray&quot;, &quot;dashArray&quot;: &quot;5&quot;, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;gray&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.3, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(map_384d2184024ba49fa230ec436f30e8d3);
+        
+    
+            var marker_1f1dc207a87f61a7c7e27809bd6cdeaa = L.marker(
+                [40.7057505, -74.0029056],
+                {}
+            ).addTo(map_384d2184024ba49fa230ec436f30e8d3);
+        
+    
+            var icon_8be26c756557788337ab76c8bc95f3d7 = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;star&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;blue&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_1f1dc207a87f61a7c7e27809bd6cdeaa.setIcon(icon_8be26c756557788337ab76c8bc95f3d7);
+        
+    
+        var popup_48a326ea5e2d55fd996114a5c4cacd97 = L.popup({&quot;maxWidth&quot;: 250});
+
+        
+            
+                var html_6004fb4e36d43f16b5c0db3659676e32 = $(`&lt;div id=&quot;html_6004fb4e36d43f16b5c0db3659676e32&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;         &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 180px;&quot;&gt;             &lt;h4 style=&quot;color: #2c3e50; margin: 0 0 8px 0;&quot;&gt;South Street Seaport&lt;/h4&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Type:&lt;/b&gt; Attraction&lt;/p&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Location:&lt;/b&gt; 40.7058, -74.0029&lt;/p&gt;             &lt;p style=&quot;margin: 8px 0 0 0; font-size: 12px; color: #95a5a6;&quot;&gt;#2 on the list&lt;/p&gt;         &lt;/div&gt;         &lt;/div&gt;`)[0];
+                popup_48a326ea5e2d55fd996114a5c4cacd97.setContent(html_6004fb4e36d43f16b5c0db3659676e32);
+            
+        
+
+        marker_1f1dc207a87f61a7c7e27809bd6cdeaa.bindPopup(popup_48a326ea5e2d55fd996114a5c4cacd97)
+        ;
+
+        
+    
+    
+            marker_1f1dc207a87f61a7c7e27809bd6cdeaa.bindTooltip(
+                `&lt;div&gt;
+                     #2: South Street Seaport
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var poly_line_38023cb4a0ab98984335fcdf9363529e = L.polyline(
+                [[40.7127281, -74.0060152], [40.7057505, -74.0029056]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;gray&quot;, &quot;dashArray&quot;: &quot;5&quot;, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;gray&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.3, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(map_384d2184024ba49fa230ec436f30e8d3);
+        
+    
+            var marker_87709cc19e80c590d29c17e81b594c22 = L.marker(
+                [40.7065114, -74.0033727],
+                {}
+            ).addTo(map_384d2184024ba49fa230ec436f30e8d3);
+        
+    
+            var icon_65689e78ab9f21ca2fd84908597a4545 = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;star&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;blue&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_87709cc19e80c590d29c17e81b594c22.setIcon(icon_65689e78ab9f21ca2fd84908597a4545);
+        
+    
+        var popup_45c1b5578e5d62c15d2d69e8c139040e = L.popup({&quot;maxWidth&quot;: 250});
+
+        
+            
+                var html_cf5b92e83e0f60a7a98f1740ece399a0 = $(`&lt;div id=&quot;html_cf5b92e83e0f60a7a98f1740ece399a0&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;         &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 180px;&quot;&gt;             &lt;h4 style=&quot;color: #2c3e50; margin: 0 0 8px 0;&quot;&gt;South Street Seaport Historic District&lt;/h4&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Type:&lt;/b&gt; Maritime&lt;/p&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Location:&lt;/b&gt; 40.7065, -74.0034&lt;/p&gt;             &lt;p style=&quot;margin: 8px 0 0 0; font-size: 12px; color: #95a5a6;&quot;&gt;#3 on the list&lt;/p&gt;         &lt;/div&gt;         &lt;/div&gt;`)[0];
+                popup_45c1b5578e5d62c15d2d69e8c139040e.setContent(html_cf5b92e83e0f60a7a98f1740ece399a0);
+            
+        
+
+        marker_87709cc19e80c590d29c17e81b594c22.bindPopup(popup_45c1b5578e5d62c15d2d69e8c139040e)
+        ;
+
+        
+    
+    
+            marker_87709cc19e80c590d29c17e81b594c22.bindTooltip(
+                `&lt;div&gt;
+                     #3: South Street Seaport Historic District
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var poly_line_575f5cac087f181a20722077256c4673 = L.polyline(
+                [[40.7127281, -74.0060152], [40.7065114, -74.0033727]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;gray&quot;, &quot;dashArray&quot;: &quot;5&quot;, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;gray&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.3, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(map_384d2184024ba49fa230ec436f30e8d3);
+        
+    
+            var marker_5cf7874b21c8589abebe8dd4714f8497 = L.marker(
+                [40.7120735, -74.0161706],
+                {}
+            ).addTo(map_384d2184024ba49fa230ec436f30e8d3);
+        
+    
+            var icon_b076085958a40daeb3d532789bfe2726 = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;tree&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;green&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_5cf7874b21c8589abebe8dd4714f8497.setIcon(icon_b076085958a40daeb3d532789bfe2726);
+        
+    
+        var popup_9d4a24f5616190b53f8ddcfe6647e131 = L.popup({&quot;maxWidth&quot;: 250});
+
+        
+            
+                var html_490e3c7d8e87ef4dae6182ce728b9b76 = $(`&lt;div id=&quot;html_490e3c7d8e87ef4dae6182ce728b9b76&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;         &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 180px;&quot;&gt;             &lt;h4 style=&quot;color: #2c3e50; margin: 0 0 8px 0;&quot;&gt;Pumphouse Park&lt;/h4&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Type:&lt;/b&gt; Park&lt;/p&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Location:&lt;/b&gt; 40.7121, -74.0162&lt;/p&gt;             &lt;p style=&quot;margin: 8px 0 0 0; font-size: 12px; color: #95a5a6;&quot;&gt;#4 on the list&lt;/p&gt;         &lt;/div&gt;         &lt;/div&gt;`)[0];
+                popup_9d4a24f5616190b53f8ddcfe6647e131.setContent(html_490e3c7d8e87ef4dae6182ce728b9b76);
+            
+        
+
+        marker_5cf7874b21c8589abebe8dd4714f8497.bindPopup(popup_9d4a24f5616190b53f8ddcfe6647e131)
+        ;
+
+        
+    
+    
+            marker_5cf7874b21c8589abebe8dd4714f8497.bindTooltip(
+                `&lt;div&gt;
+                     #4: Pumphouse Park
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var poly_line_d3413fb9b6ab8605904240af59adea8e = L.polyline(
+                [[40.7127281, -74.0060152], [40.7120735, -74.0161706]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;gray&quot;, &quot;dashArray&quot;: &quot;5&quot;, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;gray&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.3, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(map_384d2184024ba49fa230ec436f30e8d3);
+        
+    
+            var marker_4be6e5626fbdc833486ba4623ddc17de = L.marker(
+                [40.7135058, -73.9985306],
+                {}
+            ).addTo(map_384d2184024ba49fa230ec436f30e8d3);
+        
+    
+            var icon_6b29ccd8c6716836219880d1ec744407 = L.AwesomeMarkers.icon(
+                {&quot;extraClasses&quot;: &quot;fa-rotate-0&quot;, &quot;icon&quot;: &quot;tree&quot;, &quot;iconColor&quot;: &quot;white&quot;, &quot;markerColor&quot;: &quot;green&quot;, &quot;prefix&quot;: &quot;fa&quot;}
+            );
+            marker_4be6e5626fbdc833486ba4623ddc17de.setIcon(icon_6b29ccd8c6716836219880d1ec744407);
+        
+    
+        var popup_c709d1e4a84b3343abd717357f8acb2c = L.popup({&quot;maxWidth&quot;: 250});
+
+        
+            
+                var html_8811f9b7245a3f890bec71d90e76b174 = $(`&lt;div id=&quot;html_8811f9b7245a3f890bec71d90e76b174&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;         &lt;div style=&quot;font-family: Arial, sans-serif; min-width: 180px;&quot;&gt;             &lt;h4 style=&quot;color: #2c3e50; margin: 0 0 8px 0;&quot;&gt;Chatham Square&lt;/h4&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Type:&lt;/b&gt; Park&lt;/p&gt;             &lt;p style=&quot;margin: 5px 0; color: #7f8c8d;&quot;&gt;&lt;b&gt;Location:&lt;/b&gt; 40.7135, -73.9985&lt;/p&gt;             &lt;p style=&quot;margin: 8px 0 0 0; font-size: 12px; color: #95a5a6;&quot;&gt;#5 on the list&lt;/p&gt;         &lt;/div&gt;         &lt;/div&gt;`)[0];
+                popup_c709d1e4a84b3343abd717357f8acb2c.setContent(html_8811f9b7245a3f890bec71d90e76b174);
+            
+        
+
+        marker_4be6e5626fbdc833486ba4623ddc17de.bindPopup(popup_c709d1e4a84b3343abd717357f8acb2c)
+        ;
+
+        
+    
+    
+            marker_4be6e5626fbdc833486ba4623ddc17de.bindTooltip(
+                `&lt;div&gt;
+                     #5: Chatham Square
+                 &lt;/div&gt;`,
+                {&quot;sticky&quot;: true}
+            );
+        
+    
+            var poly_line_434ab8a116f1f6a8d05f4d26a224abb6 = L.polyline(
+                [[40.7127281, -74.0060152], [40.7135058, -73.9985306]],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;gray&quot;, &quot;dashArray&quot;: &quot;5&quot;, &quot;dashOffset&quot;: null, &quot;fill&quot;: false, &quot;fillColor&quot;: &quot;gray&quot;, &quot;fillOpacity&quot;: 0.2, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;noClip&quot;: false, &quot;opacity&quot;: 0.3, &quot;smoothFactor&quot;: 1.0, &quot;stroke&quot;: true, &quot;weight&quot;: 1}
+            ).addTo(map_384d2184024ba49fa230ec436f30e8d3);
+        
+    
+            var circle_79fe7172c251a286d62c947a58ef8ca3 = L.circle(
+                [40.7127281, -74.0060152],
+                {&quot;bubblingMouseEvents&quot;: true, &quot;color&quot;: &quot;lightblue&quot;, &quot;dashArray&quot;: null, &quot;dashOffset&quot;: null, &quot;fill&quot;: true, &quot;fillColor&quot;: &quot;lightblue&quot;, &quot;fillOpacity&quot;: 0.1, &quot;fillRule&quot;: &quot;evenodd&quot;, &quot;lineCap&quot;: &quot;round&quot;, &quot;lineJoin&quot;: &quot;round&quot;, &quot;opacity&quot;: 1.0, &quot;radius&quot;: 10000, &quot;stroke&quot;: true, &quot;weight&quot;: 3}
+            ).addTo(map_384d2184024ba49fa230ec436f30e8d3);
+        
+    
+        var popup_bc22b8f922fabd3994151fca0b064cf0 = L.popup({&quot;maxWidth&quot;: &quot;100%&quot;});
+
+        
+            
+                var html_76e2bc8911b6db6e4d58923f26a2aeb3 = $(`&lt;div id=&quot;html_76e2bc8911b6db6e4d58923f26a2aeb3&quot; style=&quot;width: 100.0%; height: 100.0%;&quot;&gt;Search area (10km radius)&lt;/div&gt;`)[0];
+                popup_bc22b8f922fabd3994151fca0b064cf0.setContent(html_76e2bc8911b6db6e4d58923f26a2aeb3);
+            
+        
+
+        circle_79fe7172c251a286d62c947a58ef8ca3.bindPopup(popup_bc22b8f922fabd3994151fca0b064cf0)
+        ;
+
+        
+    
+    
+            L.control.fullscreen(
+                {&quot;forceSeparateButton&quot;: true, &quot;position&quot;: &quot;topright&quot;, &quot;title&quot;: &quot;Fullscreen&quot;, &quot;titleCancel&quot;: &quot;Exit fullscreen&quot;}
+            ).addTo(map_384d2184024ba49fa230ec436f30e8d3);
+        
+    
+            var measure_control_b564d413b898261dd8661c3b54de69ce = new L.Control.Measure(
+                {&quot;position&quot;: &quot;topleft&quot;, &quot;primaryAreaUnit&quot;: &quot;sqmeters&quot;, &quot;primaryLengthUnit&quot;: &quot;kilometers&quot;, &quot;secondaryAreaUnit&quot;: &quot;acres&quot;, &quot;secondaryLengthUnit&quot;: &quot;miles&quot;});
+            map_384d2184024ba49fa230ec436f30e8d3.addControl(measure_control_b564d413b898261dd8661c3b54de69ce);
+
+            // Workaround for using this plugin with Leaflet&gt;=1.8.0
+            // https://github.com/ljagis/leaflet-measure/issues/171
+            L.Control.Measure.include({
+                _setCaptureMarkerIcon: function () {
+                    // disable autopan
+                    this._captureMarker.options.autoPanOnFocus = false;
+                    // default function
+                    this._captureMarker.setIcon(
+                        L.divIcon({
+                            iconSize: this._map.getSize().multiplyBy(2)
+                        })
+                    );
+                },
+            });
+
+        
+&lt;/script&gt;
+&lt;/html&gt;" style="position:absolute;width:100%;height:100%;left:0;top:0;border:none !important;" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe></div></div>
+        </div>
+    </body>
+    </html>
+    
