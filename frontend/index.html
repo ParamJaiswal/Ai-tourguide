@@ -340,9 +340,69 @@
                 opacity: 1;
             }
         }
+
+        /* SOS Emergency Button */
+        .sos-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 0, 0, 0.4);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .sos-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(255, 0, 0, 0.6);
+        }
+
+        .sos-button:active {
+            transform: scale(0.95);
+        }
+
+        .sos-button i {
+            font-size: 1.3rem;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 5px 20px rgba(255, 0, 0, 0.4);
+            }
+            50% {
+                box-shadow: 0 5px 30px rgba(255, 0, 0, 0.8);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sos-button {
+                top: 10px;
+                right: 10px;
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- SOS Emergency Button -->
+    <button class="sos-button" onclick="sendSOSAlert()">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span>SOS</span>
+    </button>
+
     <div class="container">
         <!-- Header -->
         <div class="header">
@@ -448,6 +508,68 @@
             setTimeout(() => {
                 toast.classList.remove('show');
             }, 3000);
+        }
+
+        // SOS Emergency Function
+        function sendSOSAlert() {
+            if (confirm('🚨 Send SOS emergency alert to Bangalore Police via WhatsApp?\n\nThis will share your location with emergency services.')) {
+                // Get current location
+                if (navigator.geolocation) {
+                    showToast('📍 Getting your location...', 'success');
+                    
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const lat = position.coords.latitude;
+                            const lon = position.coords.longitude;
+                            const locationUrl = `https://www.google.com/maps?q=${lat},${lon}`;
+                            
+                            // WhatsApp message
+                            const message = `🚨 EMERGENCY SOS ALERT 🚨\n\n` +
+                                          `I need immediate help!\n\n` +
+                                          `📍 My Location: ${locationUrl}\n\n` +
+                                          `Latitude: ${lat.toFixed(6)}\n` +
+                                          `Longitude: ${lon.toFixed(6)}\n\n` +
+                                          `Time: ${new Date().toLocaleString()}\n\n` +
+                                          `Please send assistance immediately!`;
+                            
+                            // WhatsApp URL (Bangalore Police)
+                            const whatsappUrl = `https://wa.me/919480801000?text=${encodeURIComponent(message)}`;
+                            
+                            // Open WhatsApp
+                            window.open(whatsappUrl, '_blank');
+                            showToast('✅ Opening WhatsApp to send SOS...', 'success');
+                        },
+                        (error) => {
+                            // If location fails, send without location
+                            const message = `🚨 EMERGENCY SOS ALERT 🚨\n\n` +
+                                          `I need immediate help!\n\n` +
+                                          `⚠️ Location unavailable\n` +
+                                          `Time: ${new Date().toLocaleString()}\n\n` +
+                                          `Please call me immediately!`;
+                            
+                            const whatsappUrl = `https://wa.me/919480801000?text=${encodeURIComponent(message)}`;
+                            window.open(whatsappUrl, '_blank');
+                            showToast('⚠️ Location unavailable, sending SOS without location', 'error');
+                        },
+                        {
+                            enableHighAccuracy: true,
+                            timeout: 5000,
+                            maximumAge: 0
+                        }
+                    );
+                } else {
+                    // Browser doesn't support geolocation
+                    const message = `🚨 EMERGENCY SOS ALERT 🚨\n\n` +
+                                  `I need immediate help!\n\n` +
+                                  `⚠️ Location unavailable (browser not supported)\n` +
+                                  `Time: ${new Date().toLocaleString()}\n\n` +
+                                  `Please call me immediately!`;
+                    
+                    const whatsappUrl = `https://wa.me/919480801000?text=${encodeURIComponent(message)}`;
+                    window.open(whatsappUrl, '_blank');
+                    showToast('⚠️ Opening WhatsApp (location not supported)', 'error');
+                }
+            }
         }
 
         function showLoading() {
