@@ -46,7 +46,6 @@ class PlacesAgent(BaseAgent):
                     response_text += f"{idx}. {icon} {place['name']}\n"
                 
                 # Add helpful context
-                response_text += f"\n📍 All within 10km of {place_name} city center"
                 response_text += f"\n💡 Tip: Ask me 'Show me {place_name} on a map' for an interactive view!"
                 
             else:
